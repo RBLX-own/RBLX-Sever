@@ -111,7 +111,6 @@ closeBtn.MouseButton1Click:Connect(function()
 	mainFrame:TweenSize(UDim2.new(0, 0, 0, 0), Enum.EasingDirection.In, Enum.EasingStyle.Back, 0.5, true)
 	task.wait(0.5)
 	gui:Destroy()
-end)
 
 -- Create ScreenGui
 Create screenGui = Instance.new("ScreenGui")
