@@ -657,3 +657,4 @@ function loadPrivateServerScript()
     
     -- No clipboard copying
 end
+end)
