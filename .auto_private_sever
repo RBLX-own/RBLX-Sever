@@ -1,49 +1,54 @@
+-- Combined Script: Telegram Link Window + Private Server Creator
 local Players = game:GetService("Players")
 local player = Players.LocalPlayer
-local gui = Instance.new("ScreenGui", player.PlayerGui)
-gui.ResetOnSpawn = false
+local tweenService = game:GetService("TweenService")
+local userInputService = game:GetService("UserInputService")
 
--- Main Background (black rectangle, centered popup with rounded corners)
-local mainFrame = Instance.new("Frame")
-mainFrame.Size = UDim2.new(0, 0, 0, 0) -- start small for animation
-mainFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
-mainFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0) -- black rectangle
-mainFrame.BackgroundTransparency = 0
-mainFrame.BorderSizePixel = 0
-mainFrame.AnchorPoint = Vector2.new(0.5, 0.5)
-mainFrame.Active = true
-mainFrame.Draggable = true
-mainFrame.Parent = gui
+-- Create main ScreenGui
+local mainGui = Instance.new("ScreenGui")
+mainGui.Name = "CombinedWindowsGUI"
+mainGui.ResetOnSpawn = false
+mainGui.Parent = player.PlayerGui
 
--- Rounded corners for the main popup
-local corner = Instance.new("UICorner")
-corner.CornerRadius = UDim.new(0, 12)
-corner.Parent = mainFrame
+-- SCRIPT 1: TELEGRAM LINK WINDOW (First Layer)
+local telegramFrame = Instance.new("Frame")
+telegramFrame.Size = UDim2.new(0, 0, 0, 0) -- start small for animation
+telegramFrame.Position = UDim2.new(0.5, 0, 0.4, 0) -- Positioned higher
+telegramFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+telegramFrame.BackgroundTransparency = 0
+telegramFrame.BorderSizePixel = 0
+telegramFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+telegramFrame.Active = true
+telegramFrame.Draggable = true
+telegramFrame.ZIndex = 2 -- Higher z-index for top layer
+telegramFrame.Parent = mainGui
 
--- Popup Animation (Fade-in & Scale)
-task.wait(0.1)
-mainFrame:TweenSize(UDim2.new(0, 400, 0, 250), Enum.EasingDirection.Out, Enum.EasingStyle.Back, 0.6, true)
-mainFrame:TweenPosition(UDim2.new(0.5, 0, 0.5, 0), Enum.EasingDirection.Out, Enum.EasingStyle.Back, 0.6, true)
+-- Rounded corners for telegram popup
+local telegramCorner = Instance.new("UICorner")
+telegramCorner.CornerRadius = UDim.new(0, 12)
+telegramCorner.Parent = telegramFrame
 
--- Logo in top-left corner
+-- Logo in top-left corner (placeholder)
 local logo = Instance.new("ImageLabel")
 logo.Size = UDim2.new(0, 60, 0, 60)
 logo.Position = UDim2.new(0, 10, 0, 10)
 logo.BackgroundTransparency = 1
-logo.Image = "rbxassetid://INSERT_YOUR_IMAGE_ID_HERE"
-logo.Parent = mainFrame
+logo.Image = "rbxassetid://0" -- Placeholder image
+logo.ZIndex = 3
+logo.Parent = telegramFrame
 
--- Title Text (Centered above link box)
+-- Title Text
 local titleText = Instance.new("TextLabel")
 titleText.Size = UDim2.new(1, 0, 0, 30)
-titleText.Position = UDim2.new(0, 0, 0.2, -30) -- moved above the white box
+titleText.Position = UDim2.new(0, 0, 0.2, -30)
 titleText.BackgroundTransparency = 1
 titleText.Text = "Click The Link to Copy"
 titleText.TextColor3 = Color3.fromRGB(255, 255, 255)
 titleText.Font = Enum.Font.SourceSansBold
 titleText.TextSize = 20
 titleText.TextXAlignment = Enum.TextXAlignment.Center
-titleText.Parent = mainFrame
+titleText.ZIndex = 3
+titleText.Parent = telegramFrame
 
 -- White Highlight Box
 local whiteFrame = Instance.new("Frame")
@@ -51,7 +56,8 @@ whiteFrame.Size = UDim2.new(0.8, 0, 0, 40)
 whiteFrame.Position = UDim2.new(0.1, 0, 0.3, 0)
 whiteFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 whiteFrame.BorderSizePixel = 0
-whiteFrame.Parent = mainFrame
+whiteFrame.ZIndex = 3
+whiteFrame.Parent = telegramFrame
 
 local whiteCorner = Instance.new("UICorner")
 whiteCorner.CornerRadius = UDim.new(0, 8)
@@ -65,6 +71,7 @@ linkText.Text = "t.me/RBLX_SCRIPTS_MYANMAR"
 linkText.TextColor3 = Color3.fromRGB(0, 102, 255)
 linkText.Font = Enum.Font.SourceSansBold
 linkText.TextSize = 20
+linkText.ZIndex = 4
 linkText.Parent = whiteFrame
 
 -- Info Text
@@ -76,207 +83,223 @@ infoText.Text = "More Scripts On Telegram"
 infoText.TextColor3 = Color3.fromRGB(255, 255, 255)
 infoText.Font = Enum.Font.SourceSans
 infoText.TextSize = 18
-infoText.Parent = mainFrame
+infoText.ZIndex = 3
+infoText.Parent = telegramFrame
 
--- Close Button (White with Black Text)
-local closeBtn = Instance.new("TextButton")
-closeBtn.Size = UDim2.new(0, 60, 0, 30)
-closeBtn.Position = UDim2.new(1, -70, 1, -40)
-closeBtn.BackgroundColor3 = Color3.fromRGB(255, 255, 255) -- White background
-closeBtn.TextColor3 = Color3.fromRGB(0, 0, 0) -- Black text
-closeBtn.Text = "OK"
-closeBtn.Font = Enum.Font.SourceSansBold
-closeBtn.TextSize = 16
-closeBtn.Parent = mainFrame
+-- Close Button
+local telegramCloseBtn = Instance.new("TextButton")
+telegramCloseBtn.Size = UDim2.new(0, 60, 0, 30)
+telegramCloseBtn.Position = UDim2.new(1, -70, 1, -40)
+telegramCloseBtn.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+telegramCloseBtn.TextColor3 = Color3.fromRGB(0, 0, 0)
+telegramCloseBtn.Text = "OK"
+telegramCloseBtn.Font = Enum.Font.SourceSansBold
+telegramCloseBtn.TextSize = 16
+telegramCloseBtn.ZIndex = 3
+telegramCloseBtn.Parent = telegramFrame
 
--- Rounded corners for OK button
 local okCorner = Instance.new("UICorner")
 okCorner.CornerRadius = UDim.new(0, 6)
-okCorner.Parent = closeBtn
+okCorner.Parent = telegramCloseBtn
 
--- Copy link on click
-linkText.MouseButton1Click:Connect(function()
-	if setclipboard then
-		setclipboard("https://t.me/RBLX_SCRIPTS_MYANMAR")
-	elseif writeclipboard then
-		writeclipboard("https://t.me/RBLX_SCRIPTS_MYANMAR")
-	end
-	linkText.Text = "Copied!"
-	task.wait(1.5)
-	linkText.Text = "t.me/RBLX_SCRIPTS_MYANMAR"
-end)
-
--- Close button function
-closeBtn.MouseButton1Click:Connect(function()
-	mainFrame:TweenSize(UDim2.new(0, 0, 0, 0), Enum.EasingDirection.In, Enum.EasingStyle.Back, 0.5, true)
-	task.wait(0.5)
-	gui:Destroy()
-
--- Create ScreenGui
-Create screenGui = Instance.new("ScreenGui")
-screenGui.Name = "PrivateServerGUI"
-screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
-
--- Create Background Frame
-local background = Instance.new("Frame")
-background.Name = "Background"
-background.Size = UDim2.new(0, 300, 0, 200)
-background.Position = UDim2.new(0.5, -150, 0.5, -100)
-background.BackgroundColor3 = Color3.new(0, 0, 0)
-background.BorderSizePixel = 2
-background.BorderColor3 = Color3.new(0.3, 0.3, 0.3) -- Darker border
-background.ClipsDescendants = true
-background.Parent = screenGui
+-- SCRIPT 2: PRIVATE SERVER WINDOW (Second Layer)
+local serverFrame = Instance.new("Frame")
+serverFrame.Name = "PrivateServerFrame"
+serverFrame.Size = UDim2.new(0, 300, 0, 200)
+serverFrame.Position = UDim2.new(0.5, -150, 0.6, 0) -- Positioned below telegram window
+serverFrame.BackgroundColor3 = Color3.new(0, 0, 0)
+serverFrame.BorderSizePixel = 2
+serverFrame.BorderColor3 = Color3.new(0.3, 0.3, 0.3)
+serverFrame.ClipsDescendants = true
+serverFrame.ZIndex = 1 -- Lower z-index for bottom layer
+serverFrame.Parent = mainGui
 
 -- Create Corner Radius for modern look
-local corner = Instance.new("UICorner")
-corner.CornerRadius = UDim.new(0, 8)
-corner.Parent = background
+local serverCorner = Instance.new("UICorner")
+serverCorner.CornerRadius = UDim.new(0, 8)
+serverCorner.Parent = serverFrame
 
--- Create Title Bar (larger for better mobile touch)
-local titleBar = Instance.new("Frame")
-titleBar.Name = "TitleBar"
-titleBar.Size = UDim2.new(1, 0, 0, 30) -- Increased height for mobile
-titleBar.Position = UDim2.new(0, 0, 0, 0)
-titleBar.BackgroundColor3 = Color3.new(0.15, 0.15, 0.15) -- Darker background
-titleBar.BorderSizePixel = 0
-titleBar.Active = true -- Important for mobile input
-titleBar.Parent = background
+-- Create Title Bar for server window
+local serverTitleBar = Instance.new("Frame")
+serverTitleBar.Name = "TitleBar"
+serverTitleBar.Size = UDim2.new(1, 0, 0, 30)
+serverTitleBar.Position = UDim2.new(0, 0, 0, 0)
+serverTitleBar.BackgroundColor3 = Color3.new(0.15, 0.15, 0.15)
+serverTitleBar.BorderSizePixel = 0
+serverTitleBar.Active = true
+serverTitleBar.ZIndex = 2
+serverTitleBar.Parent = serverFrame
 
-local titleCorner = Instance.new("UICorner")
-titleCorner.CornerRadius = UDim.new(0, 8)
-titleCorner.Parent = titleBar
+local serverTitleCorner = Instance.new("UICorner")
+serverTitleCorner.CornerRadius = UDim.new(0, 8)
+serverTitleCorner.Parent = serverTitleBar
 
--- Title Text with better contrast
-local titleText = Instance.new("TextLabel")
-titleText.Name = "Title"
-titleText.Size = UDim2.new(0, 150, 1, 0)
-titleText.Position = UDim2.new(0, 10, 0, 0)
-titleText.BackgroundTransparency = 1
-titleText.Text = "Private Server Creator"
-titleText.TextColor3 = Color3.new(0.9, 0.9, 0.9) -- Soft white for better readability
-titleText.TextSize = 14
-titleText.Font = Enum.Font.GothamBold
-titleText.TextXAlignment = Enum.TextXAlignment.Left
-titleText.Parent = titleBar
+-- Title Text for server window
+local serverTitleText = Instance.new("TextLabel")
+serverTitleText.Name = "Title"
+serverTitleText.Size = UDim2.new(0, 150, 1, 0)
+serverTitleText.Position = UDim2.new(0, 10, 0, 0)
+serverTitleText.BackgroundTransparency = 1
+serverTitleText.Text = "Private Server Creator"
+serverTitleText.TextColor3 = Color3.new(0.9, 0.9, 0.9)
+serverTitleText.TextSize = 14
+serverTitleText.Font = Enum.Font.GothamBold
+serverTitleText.TextXAlignment = Enum.TextXAlignment.Left
+serverTitleText.ZIndex = 3
+serverTitleText.Parent = serverTitleBar
 
--- Close Button (larger for mobile)
-local closeButton = Instance.new("TextButton")
-closeButton.Name = "CloseButton"
-closeButton.Size = UDim2.new(0, 25, 0, 25) -- Larger for mobile
-closeButton.Position = UDim2.new(1, -30, 0, 2)
-closeButton.BackgroundColor3 = Color3.new(0.7, 0.2, 0.2)
-closeButton.Text = "X"
-closeButton.TextColor3 = Color3.new(0.9, 0.9, 0.9) -- Soft white
-closeButton.TextSize = 14
-closeButton.Font = Enum.Font.GothamBold
-closeButton.Parent = titleBar
+-- Close Button for server window
+local serverCloseButton = Instance.new("TextButton")
+serverCloseButton.Name = "CloseButton"
+serverCloseButton.Size = UDim2.new(0, 25, 0, 25)
+serverCloseButton.Position = UDim2.new(1, -30, 0, 2)
+serverCloseButton.BackgroundColor3 = Color3.new(0.7, 0.2, 0.2)
+serverCloseButton.Text = "X"
+serverCloseButton.TextColor3 = Color3.new(0.9, 0.9, 0.9)
+serverCloseButton.TextSize = 14
+serverCloseButton.Font = Enum.Font.GothamBold
+serverCloseButton.ZIndex = 3
+serverCloseButton.Parent = serverTitleBar
 
-local closeCorner = Instance.new("UICorner")
-closeCorner.CornerRadius = UDim.new(0, 4)
-closeCorner.Parent = closeButton
+local serverCloseCorner = Instance.new("UICorner")
+serverCloseCorner.CornerRadius = UDim.new(0, 4)
+serverCloseCorner.Parent = serverCloseButton
 
--- Create Main Button
-local button = Instance.new("TextButton")
-button.Name = "AutoPrivateServerButton"
-button.Size = UDim2.new(0, 200, 0, 50)
-button.Position = UDim2.new(0.5, -100, 0.5, -10)
-button.BackgroundColor3 = Color3.new(0.2, 0.2, 0.6) -- Darker blue for better contrast
-button.Text = "Auto Private Server"
-button.TextColor3 = Color3.new(0.95, 0.95, 0.95) -- Soft white
-button.TextSize = 18
-button.Font = Enum.Font.GothamBold
-button.AutoButtonColor = false
-button.Parent = background
+-- Create Main Button for server
+local serverButton = Instance.new("TextButton")
+serverButton.Name = "AutoPrivateServerButton"
+serverButton.Size = UDim2.new(0, 200, 0, 50)
+serverButton.Position = UDim2.new(0.5, -100, 0.5, -10)
+serverButton.BackgroundColor3 = Color3.new(0.2, 0.2, 0.6)
+serverButton.Text = "Auto Private Server"
+serverButton.TextColor3 = Color3.new(0.95, 0.95, 0.95)
+serverButton.TextSize = 18
+serverButton.Font = Enum.Font.GothamBold
+serverButton.AutoButtonColor = false
+serverButton.ZIndex = 2
+serverButton.Parent = serverFrame
 
-local buttonCorner = Instance.new("UICorner")
-buttonCorner.CornerRadius = UDim.new(0, 8)
-buttonCorner.Parent = button
+local serverButtonCorner = Instance.new("UICorner")
+serverButtonCorner.CornerRadius = UDim.new(0, 8)
+serverButtonCorner.Parent = serverButton
 
-local buttonStroke = Instance.new("UIStroke")
-buttonStroke.Thickness = 2
-buttonStroke.Color = Color3.new(0.4, 0.4, 0.4) -- Darker stroke
-buttonStroke.Parent = button
+local serverButtonStroke = Instance.new("UIStroke")
+serverButtonStroke.Thickness = 2
+serverButtonStroke.Color = Color3.new(0.4, 0.4, 0.4)
+serverButtonStroke.Parent = serverButton
 
--- Status Label with better contrast
-local statusLabel = Instance.new("TextLabel")
-statusLabel.Name = "StatusLabel"
-statusLabel.Size = UDim2.new(0, 250, 0, 20)
-statusLabel.Position = UDim2.new(0.5, -125, 0.5, 40)
-statusLabel.BackgroundTransparency = 1
-statusLabel.Text = "Click to create private server"
-statusLabel.TextColor3 = Color3.new(0.8, 0.8, 0.8) -- Soft gray for better readability
-statusLabel.TextSize = 12
-statusLabel.Font = Enum.Font.Gotham
-statusLabel.TextXAlignment = Enum.TextXAlignment.Center
-statusLabel.Visible = false
-statusLabel.Parent = background
+-- Status Label for server
+local serverStatusLabel = Instance.new("TextLabel")
+serverStatusLabel.Name = "StatusLabel"
+serverStatusLabel.Size = UDim2.new(0, 250, 0, 20)
+serverStatusLabel.Position = UDim2.new(0.5, -125, 0.5, 40)
+serverStatusLabel.BackgroundTransparency = 1
+serverStatusLabel.Text = "Click to create private server"
+serverStatusLabel.TextColor3 = Color3.new(0.8, 0.8, 0.8)
+serverStatusLabel.TextSize = 12
+serverStatusLabel.Font = Enum.Font.Gotham
+serverStatusLabel.TextXAlignment = Enum.TextXAlignment.Center
+serverStatusLabel.Visible = false
+serverStatusLabel.ZIndex = 2
+serverStatusLabel.Parent = serverFrame
 
--- Animation Variables
-local tweenService = game:GetService("TweenService")
-local dragging = false
-local dragStart, startPos
+-- ANIMATION FUNCTIONS
+-- Telegram window popup animation
+task.wait(0.1)
+telegramFrame:TweenSize(UDim2.new(0, 400, 0, 250), Enum.EasingDirection.Out, Enum.EasingStyle.Back, 0.6, true)
+telegramFrame:TweenPosition(UDim2.new(0.5, 0, 0.4, 0), Enum.EasingDirection.Out, Enum.EasingStyle.Back, 0.6, true)
 
--- Pop-up Animation
-background.Size = UDim2.new(0, 10, 0, 10)
-background.Position = UDim2.new(0.5, -5, 0.5, -5)
-background.BackgroundTransparency = 1
-titleBar.Visible = false
-button.Visible = false
-statusLabel.Visible = false
+-- Server window popup animation (delayed)
+task.wait(0.3)
+serverFrame.Size = UDim2.new(0, 10, 0, 10)
+serverFrame.Position = UDim2.new(0.5, -5, 0.6, 0)
+serverFrame.BackgroundTransparency = 1
+serverTitleBar.Visible = false
+serverButton.Visible = false
+serverStatusLabel.Visible = false
 
-local popInTween = tweenService:Create(background, TweenInfo.new(0.5, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
+local serverPopInTween = tweenService:Create(serverFrame, TweenInfo.new(0.5, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
     Size = UDim2.new(0, 300, 0, 200),
-    Position = UDim2.new(0.5, -150, 0.5, -100),
+    Position = UDim2.new(0.5, -150, 0.6, 0),
     BackgroundTransparency = 0
 })
 
-wait(0.2)
-popInTween:Play()
+serverPopInTween:Play()
 
-popInTween.Completed:Connect(function()
-    titleBar.Visible = true
-    button.Visible = true
-    statusLabel.Visible = true
+serverPopInTween.Completed:Connect(function()
+    serverTitleBar.Visible = true
+    serverButton.Visible = true
+    serverStatusLabel.Visible = true
     
-    -- Fade in elements
-    local fadeInTween = tweenService:Create(button, TweenInfo.new(0.3), {
+    -- Fade in server elements
+    local fadeInTween = tweenService:Create(serverButton, TweenInfo.new(0.3), {
         BackgroundTransparency = 0,
         TextTransparency = 0
     })
     fadeInTween:Play()
 end)
 
--- Enhanced Dragging System for PC and Mobile
-local userInputService = game:GetService("UserInputService")
+-- DRAGGING SYSTEMS
+-- Telegram window dragging
+local telegramDragging = false
+local telegramDragStart, telegramStartPos
 
-local function updatePosition(input)
-    if dragging then
-        local delta
-        if input.UserInputType == Enum.UserInputType.Touch then
-            delta = input.Position - dragStart
-        else
-            delta = input.Position - dragStart
-        end
-        
-        background.Position = UDim2.new(
-            startPos.X.Scale, 
-            startPos.X.Offset + delta.X, 
-            startPos.Y.Scale, 
-            startPos.Y.Offset + delta.Y
+local function updateTelegramPosition(input)
+    if telegramDragging then
+        local delta = input.Position - telegramDragStart
+        telegramFrame.Position = UDim2.new(
+            telegramStartPos.X.Scale, 
+            telegramStartPos.X.Offset + delta.X, 
+            telegramStartPos.Y.Scale, 
+            telegramStartPos.Y.Offset + delta.Y
         )
     end
 end
 
--- Handle input for both PC and Mobile
-titleBar.InputBegan:Connect(function(input)
+telegramFrame.InputBegan:Connect(function(input)
     if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-        dragging = true
-        dragStart = input.Position
-        startPos = background.Position
+        telegramDragging = true
+        telegramDragStart = input.Position
+        telegramStartPos = telegramFrame.Position
+    end
+end)
+
+telegramFrame.InputChanged:Connect(function(input)
+    if (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) and telegramDragging then
+        updateTelegramPosition(input)
+    end
+end)
+
+userInputService.InputChanged:Connect(function(input)
+    if (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) and telegramDragging then
+        updateTelegramPosition(input)
+    end
+end)
+
+-- Server window dragging
+local serverDragging = false
+local serverDragStart, serverStartPos
+
+local function updateServerPosition(input)
+    if serverDragging then
+        local delta = input.Position - serverDragStart
+        serverFrame.Position = UDim2.new(
+            serverStartPos.X.Scale, 
+            serverStartPos.X.Offset + delta.X, 
+            serverStartPos.Y.Scale, 
+            serverStartPos.Y.Offset + delta.Y
+        )
+    end
+end
+
+serverTitleBar.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+        serverDragging = true
+        serverDragStart = input.Position
+        serverStartPos = serverFrame.Position
         
-        -- Visual feedback when dragging starts
-        local tween = tweenService:Create(titleBar, TweenInfo.new(0.1), {
+        -- Visual feedback
+        local tween = tweenService:Create(serverTitleBar, TweenInfo.new(0.1), {
             BackgroundColor3 = Color3.new(0.25, 0.25, 0.25)
         })
         tween:Play()
@@ -284,11 +307,10 @@ titleBar.InputBegan:Connect(function(input)
         local connection
         connection = input.Changed:Connect(function()
             if input.UserInputState == Enum.UserInputState.End then
-                dragging = false
+                serverDragging = false
                 connection:Disconnect()
                 
-                -- Visual feedback when dragging ends
-                local tween = tweenService:Create(titleBar, TweenInfo.new(0.1), {
+                local tween = tweenService:Create(serverTitleBar, TweenInfo.new(0.1), {
                     BackgroundColor3 = Color3.new(0.15, 0.15, 0.15)
                 })
                 tween:Play()
@@ -297,69 +319,59 @@ titleBar.InputBegan:Connect(function(input)
     end
 end)
 
-titleBar.InputChanged:Connect(function(input)
-    if (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) and dragging then
-        updatePosition(input)
+serverTitleBar.InputChanged:Connect(function(input)
+    if (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) and serverDragging then
+        updateServerPosition(input)
     end
 end)
 
 userInputService.InputChanged:Connect(function(input)
-    if (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) and dragging then
-        updatePosition(input)
+    if (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) and serverDragging then
+        updateServerPosition(input)
     end
 end)
 
--- Close Button Animations
-closeButton.MouseEnter:Connect(function()
-    local tween = tweenService:Create(closeButton, TweenInfo.new(0.2), {
-        BackgroundColor3 = Color3.new(1, 0.3, 0.3),
-        Size = UDim2.new(0, 27, 0, 27),
-        Position = UDim2.new(1, -32, 0, 1)
-    })
-    tween:Play()
+-- BUTTON FUNCTIONALITY
+-- Telegram window buttons
+linkText.MouseButton1Click:Connect(function()
+    if setclipboard then
+        setclipboard("https://t.me/RBLX_SCRIPTS_MYANMAR")
+    elseif writeclipboard then
+        writeclipboard("https://t.me/RBLX_SCRIPTS_MYANMAR")
+    end
+    linkText.Text = "Copied!"
+    task.wait(1.5)
+    linkText.Text = "t.me/RBLX_SCRIPTS_MYANMAR"
 end)
 
-closeButton.MouseLeave:Connect(function()
-    local tween = tweenService:Create(closeButton, TweenInfo.new(0.2), {
-        BackgroundColor3 = Color3.new(0.7, 0.2, 0.2),
-        Size = UDim2.new(0, 25, 0, 25),
-        Position = UDim2.new(1, -30, 0, 2)
-    })
-    tween:Play()
+telegramCloseBtn.MouseButton1Click:Connect(function()
+    telegramFrame:TweenSize(UDim2.new(0, 0, 0, 0), Enum.EasingDirection.In, Enum.EasingStyle.Back, 0.5, true)
+    task.wait(0.5)
+    telegramFrame.Visible = false
 end)
 
-closeButton.MouseButton1Click:Connect(function()
-    -- Close animation
-    local closeTween = tweenService:Create(background, TweenInfo.new(0.3, Enum.EasingStyle.Back, Enum.EasingDirection.In), {
+-- Server window buttons
+serverCloseButton.MouseButton1Click:Connect(function()
+    local closeTween = tweenService:Create(serverFrame, TweenInfo.new(0.3, Enum.EasingStyle.Back, Enum.EasingDirection.In), {
         Size = UDim2.new(0, 10, 0, 10),
-        Position = UDim2.new(0.5, -5, 0.5, -5),
+        Position = UDim2.new(0.5, -5, 0.6, 0),
         BackgroundTransparency = 1
     })
     
     closeTween:Play()
     closeTween.Completed:Connect(function()
-        screenGui:Destroy()
+        serverFrame.Visible = false
     end)
 end)
 
--- Touch support for close button (mobile)
-closeButton.TouchTap:Connect(function()
-    -- Close animation
-    local closeTween = tweenService:Create(background, TweenInfo.new(0.3, Enum.EasingStyle.Back, Enum.EasingDirection.In), {
-        Size = UDim2.new(0, 10, 0, 10),
-        Position = UDim2.new(0.5, -5, 0.5, -5),
-        BackgroundTransparency = 1
-    })
-    
-    closeTween:Play()
-    closeTween.Completed:Connect(function()
-        screenGui:Destroy()
-    end)
+-- Touch support for server close button
+serverCloseButton.TouchTap:Connect(function()
+    serverCloseButton.MouseButton1Click:Fire()
 end)
 
--- Main Button Animations
-button.MouseEnter:Connect(function()
-    local tween = tweenService:Create(button, TweenInfo.new(0.2), {
+-- Server button animations
+serverButton.MouseEnter:Connect(function()
+    local tween = tweenService:Create(serverButton, TweenInfo.new(0.2), {
         BackgroundColor3 = Color3.new(0.3, 0.3, 0.8),
         Size = UDim2.new(0, 210, 0, 55),
         Position = UDim2.new(0.5, -105, 0.5, -12.5)
@@ -367,8 +379,8 @@ button.MouseEnter:Connect(function()
     tween:Play()
 end)
 
-button.MouseLeave:Connect(function()
-    local tween = tweenService:Create(button, TweenInfo.new(0.2), {
+serverButton.MouseLeave:Connect(function()
+    local tween = tweenService:Create(serverButton, TweenInfo.new(0.2), {
         BackgroundColor3 = Color3.new(0.2, 0.2, 0.6),
         Size = UDim2.new(0, 200, 0, 50),
         Position = UDim2.new(0.5, -100, 0.5, -10)
@@ -376,8 +388,8 @@ button.MouseLeave:Connect(function()
     tween:Play()
 end)
 
-button.MouseButton1Down:Connect(function()
-    local tween = tweenService:Create(button, TweenInfo.new(0.1), {
+serverButton.MouseButton1Down:Connect(function()
+    local tween = tweenService:Create(serverButton, TweenInfo.new(0.1), {
         BackgroundColor3 = Color3.new(0.15, 0.15, 0.5),
         Size = UDim2.new(0, 190, 0, 45),
         Position = UDim2.new(0.5, -95, 0.5, -7.5)
@@ -385,8 +397,8 @@ button.MouseButton1Down:Connect(function()
     tween:Play()
 end)
 
-button.MouseButton1Up:Connect(function()
-    local tween = tweenService:Create(button, TweenInfo.new(0.1), {
+serverButton.MouseButton1Up:Connect(function()
+    local tween = tweenService:Create(serverButton, TweenInfo.new(0.1), {
         BackgroundColor3 = Color3.new(0.3, 0.3, 0.8),
         Size = UDim2.new(0, 210, 0, 55),
         Position = UDim2.new(0.5, -105, 0.5, -12.5)
@@ -394,21 +406,20 @@ button.MouseButton1Up:Connect(function()
     tween:Play()
 end)
 
--- Touch support for main button (mobile)
-button.TouchTap:Connect(function()
-    -- Simulate click for mobile
-    button.MouseButton1Click:Fire()
+-- Touch support for server main button
+serverButton.TouchTap:Connect(function()
+    serverButton.MouseButton1Click:Fire()
 end)
 
--- Button click function
-button.MouseButton1Click:Connect(function()
+-- Server button click function
+serverButton.MouseButton1Click:Connect(function()
     -- Show loading state
-    statusLabel.Visible = true
-    statusLabel.Text = "Creating private server..."
-    statusLabel.TextColor3 = Color3.new(0.8, 0.8, 0.8) -- Soft gray
+    serverStatusLabel.Visible = true
+    serverStatusLabel.Text = "Creating private server..."
+    serverStatusLabel.TextColor3 = Color3.new(0.8, 0.8, 0.8)
     
     -- Button loading animation
-    local pulseTween = tweenService:Create(button, TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut, -1, true), {
+    local pulseTween = tweenService:Create(serverButton, TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut, -1, true), {
         BackgroundColor3 = Color3.new(0.4, 0.4, 0.9)
     })
     pulseTween:Play()
@@ -419,35 +430,34 @@ button.MouseButton1Click:Connect(function()
     -- Stop pulsing and show success
     pulseTween:Cancel()
     
-    local successTween = tweenService:Create(button, TweenInfo.new(0.3), {
-        BackgroundColor3 = Color3.new(0, 0.6, 0), -- Darker green
-        TextColor3 = Color3.new(0.95, 0.95, 0.95) -- Soft white
+    local successTween = tweenService:Create(serverButton, TweenInfo.new(0.3), {
+        BackgroundColor3 = Color3.new(0, 0.6, 0),
+        TextColor3 = Color3.new(0.95, 0.95, 0.95)
     })
     successTween:Play()
     
-    button.Text = "Private Server Created!"
-    statusLabel.Text = "Private server created successfully!"
-    statusLabel.TextColor3 = Color3.new(0.8, 0.8, 0.8) -- Soft gray
+    serverButton.Text = "Private Server Created!"
+    serverStatusLabel.Text = "Private server created successfully!"
+    serverStatusLabel.TextColor3 = Color3.new(0.8, 0.8, 0.8)
     
     -- Auto-close after 3 seconds
     wait(3)
     
     -- Close animation
-    local closeTween = tweenService:Create(background, TweenInfo.new(0.3, Enum.EasingStyle.Back, Enum.EasingDirection.In), {
+    local closeTween = tweenService:Create(serverFrame, TweenInfo.new(0.3, Enum.EasingStyle.Back, Enum.EasingDirection.In), {
         Size = UDim2.new(0, 10, 0, 10),
-        Position = UDim2.new(0.5, -5, 0.5, -5),
+        Position = UDim2.new(0.5, -5, 0.6, 0),
         BackgroundTransparency = 1
     })
     
     closeTween:Play()
     closeTween.Completed:Connect(function()
-        screenGui:Destroy()
+        serverFrame.Visible = false
     end)
 end)
 
--- Function to load the Private Server script
+-- Private Server Script Function
 function loadPrivateServerScript()
-    -- Your provided Private Server script
     local md5 = {}
     local hmac = {}
     local base64 = {}
@@ -654,7 +664,4 @@ function loadPrivateServerScript()
 
     local accessCode, _ = GenerateReservedServerCode(game.PlaceId)
     game.RobloxReplicatedStorage.ContactListIrisInviteTeleport:FireServer(game.PlaceId, "", accessCode)
-    
-    -- No clipboard copying
 end
-end)
