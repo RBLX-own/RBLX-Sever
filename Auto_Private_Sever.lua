@@ -182,16 +182,16 @@ descriptionText.TextXAlignment = Enum.TextXAlignment.Center
 descriptionText.ZIndex = 11
 descriptionText.Parent = contentFrame
 
--- Main Button for server - "Auto Private Server" - FIXED TEXT VISIBILITY
+-- Main Button for server - "Auto Private Server"
 local serverButton = Instance.new("TextButton")
 serverButton.Name = "AutoPrivateServerButton"
 serverButton.Size = UDim2.new(0, 220, 0, 50)
 serverButton.Position = UDim2.new(0.5, -110, 0.5, -10)
-serverButton.BackgroundColor3 = Color3.new(0.2, 0.5, 0.9) -- Blue background
+serverButton.BackgroundColor3 = Color3.new(0.2, 0.5, 0.9)
 serverButton.Text = "Auto Private Server"
-serverButton.TextColor3 = Color3.new(1, 1, 1) -- PURE WHITE TEXT
-serverButton.TextSize = 18 -- Slightly larger
-serverButton.Font = Enum.Font.GothamBold -- BOLD FONT
+serverButton.TextColor3 = Color3.new(1, 1, 1)
+serverButton.TextSize = 16
+serverButton.Font = Enum.Font.GothamBold
 serverButton.AutoButtonColor = false
 serverButton.ZIndex = 11
 serverButton.Parent = contentFrame
@@ -200,10 +200,9 @@ local serverButtonCorner = Instance.new("UICorner")
 serverButtonCorner.CornerRadius = UDim.new(0, 8)
 serverButtonCorner.Parent = serverButton
 
--- Remove any glow/brightness effects and use simple stroke
 local serverButtonStroke = Instance.new("UIStroke")
 serverButtonStroke.Thickness = 2
-serverButtonStroke.Color = Color3.new(1, 1, 1) -- White border for contrast
+serverButtonStroke.Color = Color3.new(1, 1, 1)
 serverButtonStroke.Parent = serverButton
 
 -- Status Label for server
@@ -680,4 +679,4 @@ end)
 print("✅ SCRIPT LOADED SUCCESSFULLY!")
 print("📱 Script 1: Telegram Window (Loads First - Behind)")
 print("🎮 Script 2: Private Server Window (Loads After OK Pressed)")
-print("🔧 Auto Private Server button now has CLEAR WHITE BOLD TEXT")
+print("🔧 Auto Private Server button will load your complete private server script")
