@@ -1,244 +1,157 @@
--- Combined Script: Telegram Link Window (Front) + Private Server Creator (Second Window)
 local Players = game:GetService("Players")
 local player = Players.LocalPlayer
-local tweenService = game:GetService("TweenService")
-local userInputService = game:GetService("UserInputService")
 
--- Create main ScreenGui
-local mainGui = Instance.new("ScreenGui")
-mainGui.Name = "CombinedWindowsGUI"
+local mainGui = Instance.new("ScreenGui", player.PlayerGui)
 mainGui.ResetOnSpawn = false
-mainGui.Parent = player.PlayerGui
 
--- SCRIPT 1: TELEGRAM LINK WINDOW
-local telegramFrame = Instance.new("Frame")
-telegramFrame.Size = UDim2.new(0, 0, 0, 0)
-telegramFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
-telegramFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-telegramFrame.BorderSizePixel = 0
-telegramFrame.AnchorPoint = Vector2.new(0.5, 0.5)
-telegramFrame.Active = true
-telegramFrame.Draggable = true
-telegramFrame.ZIndex = 20
-telegramFrame.Parent = mainGui
+-- 🔹 GLOBAL SHADOW (only one)
+local shadow = Instance.new("Frame")
+shadow.Size = UDim2.new(1, 40, 1, 40)
+shadow.Position = UDim2.new(-0.02, 0, -0.02, 0)
+shadow.BackgroundColor3 = Color3.new(0, 0, 0)
+shadow.BackgroundTransparency = 0.5
+shadow.BorderSizePixel = 0
+shadow.Visible = false
+shadow.ZIndex = 5
+shadow.Parent = mainGui
 
-local telegramCorner = Instance.new("UICorner")
-telegramCorner.CornerRadius = UDim.new(0, 12)
-telegramCorner.Parent = telegramFrame
+-- 🔹 FIRST WINDOW
+local mainFrame = Instance.new("Frame")
+mainFrame.Size = UDim2.new(0, 0, 0, 0)
+mainFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
+mainFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+mainFrame.BackgroundColor3 = Color3.new(0, 0, 0)
+mainFrame.BackgroundTransparency = 0
+mainFrame.BorderSizePixel = 0
+mainFrame.ZIndex = 6
+mainFrame.Visible = false
+mainFrame.Parent = mainGui
 
--- Title Text
-local titleText = Instance.new("TextLabel")
-titleText.Size = UDim2.new(1, 0, 0, 30)
-titleText.Position = UDim2.new(0, 0, 0.2, -30)
-titleText.BackgroundTransparency = 1
-titleText.Text = "Click The Link to Copy"
-titleText.TextColor3 = Color3.fromRGB(255, 255, 255)
-titleText.Font = Enum.Font.SourceSansBold
-titleText.TextSize = 20
-titleText.TextXAlignment = Enum.TextXAlignment.Center
-titleText.ZIndex = 21
-titleText.Parent = telegramFrame
+-- Title Bar
+local titleBar = Instance.new("Frame", mainFrame)
+titleBar.Size = UDim2.new(1, 0, 0, 40)
+titleBar.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+titleBar.ZIndex = 7
 
--- White Highlight Box
-local whiteFrame = Instance.new("Frame")
-whiteFrame.Size = UDim2.new(0.8, 0, 0, 40)
-whiteFrame.Position = UDim2.new(0.1, 0, 0.3, 0)
-whiteFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-whiteFrame.BorderSizePixel = 0
-whiteFrame.ZIndex = 21
-whiteFrame.Parent = telegramFrame
+local titleLabel = Instance.new("TextLabel", titleBar)
+titleLabel.Size = UDim2.new(1, 0, 1, 0)
+titleLabel.Text = "Main Window"
+titleLabel.TextColor3 = Color3.new(1, 1, 1)
+titleLabel.BackgroundTransparency = 1
+titleLabel.Font = Enum.Font.SourceSansBold
+titleLabel.TextSize = 20
+titleLabel.ZIndex = 8
 
-local whiteCorner = Instance.new("UICorner")
-whiteCorner.CornerRadius = UDim.new(0, 8)
-whiteCorner.Parent = whiteFrame
+-- Content
+local content = Instance.new("TextLabel", mainFrame)
+content.Size = UDim2.new(1, -20, 1, -60)
+content.Position = UDim2.new(0, 10, 0, 50)
+content.Text = "This is the first window."
+content.TextColor3 = Color3.new(1, 1, 1)
+content.BackgroundTransparency = 1
+content.Font = Enum.Font.SourceSans
+content.TextSize = 18
+content.TextWrapped = true
+content.ZIndex = 7
 
--- Clickable Link Text
-local linkText = Instance.new("TextButton")
-linkText.Size = UDim2.new(1, 0, 1, 0)
-linkText.BackgroundTransparency = 1
-linkText.Text = "t.me/RBLX_SCRIPTS_MYANMAR"
-linkText.TextColor3 = Color3.fromRGB(0, 102, 255)
-linkText.Font = Enum.Font.SourceSansBold
-linkText.TextSize = 20
-linkText.ZIndex = 22
-linkText.Parent = whiteFrame
+-- Button
+local openServerButton = Instance.new("TextButton", mainFrame)
+openServerButton.Size = UDim2.new(0, 150, 0, 40)
+openServerButton.Position = UDim2.new(0.5, -75, 1, -50)
+openServerButton.Text = "Open Server Window"
+openServerButton.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+openServerButton.TextColor3 = Color3.new(1, 1, 1)
+openServerButton.Font = Enum.Font.SourceSansBold
+openServerButton.TextSize = 18
+openServerButton.ZIndex = 8
 
--- Info Text
-local infoText = Instance.new("TextLabel")
-infoText.Size = UDim2.new(1, 0, 0, 40)
-infoText.Position = UDim2.new(0, 0, 0.55, 0)
-infoText.BackgroundTransparency = 1
-infoText.Text = "More Scripts On Telegram"
-infoText.TextColor3 = Color3.fromRGB(255, 255, 255)
-infoText.Font = Enum.Font.SourceSans
-infoText.TextSize = 18
-infoText.ZIndex = 21
-infoText.Parent = telegramFrame
-
--- Close Button
-local telegramCloseBtn = Instance.new("TextButton")
-telegramCloseBtn.Size = UDim2.new(0, 60, 0, 30)
-telegramCloseBtn.Position = UDim2.new(1, -70, 1, -40)
-telegramCloseBtn.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-telegramCloseBtn.TextColor3 = Color3.fromRGB(0, 0, 0)
-telegramCloseBtn.Text = "OK"
-telegramCloseBtn.Font = Enum.Font.SourceSansBold
-telegramCloseBtn.TextSize = 16
-telegramCloseBtn.ZIndex = 21
-telegramCloseBtn.Parent = telegramFrame
-
-local okCorner = Instance.new("UICorner")
-okCorner.CornerRadius = UDim.new(0, 6)
-okCorner.Parent = telegramCloseBtn
-
--- SCRIPT 2: PRIVATE SERVER WINDOW
+-- 🔹 SECOND WINDOW
 local serverFrame = Instance.new("Frame")
-serverFrame.Name = "PrivateServerFrame"
-serverFrame.Size = UDim2.new(0, 350, 0, 250)
-serverFrame.Position = UDim2.new(0.5, -175, 0.5, -125)
-serverFrame.BackgroundColor3 = Color3.new(0.1, 0.1, 0.1)
+serverFrame.Size = UDim2.new(0, 0, 0, 0)
+serverFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
+serverFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+serverFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
 serverFrame.BorderSizePixel = 0
-serverFrame.ClipsDescendants = false -- FIX
-serverFrame.ZIndex = 10
+serverFrame.ZIndex = 6
 serverFrame.Visible = false
 serverFrame.Parent = mainGui
 
--- Gradient
-local gradient = Instance.new("UIGradient")
-gradient.Color = ColorSequence.new({
-    ColorSequenceKeypoint.new(0, Color3.new(0.15, 0.15, 0.15)),
-    ColorSequenceKeypoint.new(1, Color3.new(0.05, 0.05, 0.05))
-})
-gradient.Rotation = 45
-gradient.Parent = serverFrame
+local serverTitle = Instance.new("Frame", serverFrame)
+serverTitle.Size = UDim2.new(1, 0, 0, 40)
+serverTitle.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+serverTitle.ZIndex = 7
 
-local serverCorner = Instance.new("UICorner")
-serverCorner.CornerRadius = UDim.new(0, 12)
-serverCorner.Parent = serverFrame
+local serverLabel = Instance.new("TextLabel", serverTitle)
+serverLabel.Size = UDim2.new(1, 0, 1, 0)
+serverLabel.Text = "Private Server"
+serverLabel.TextColor3 = Color3.new(1, 1, 1)
+serverLabel.BackgroundTransparency = 1
+serverLabel.Font = Enum.Font.SourceSansBold
+serverLabel.TextSize = 20
+serverLabel.ZIndex = 8
 
--- Shadow (moved behind window)
-local shadow = Instance.new("Frame")
-shadow.Size = UDim2.new(0, 370, 0, 270)
-shadow.Position = serverFrame.Position + UDim2.new(0, -10, 0, -10)
-shadow.BackgroundColor3 = Color3.new(0, 0, 0)
-shadow.BackgroundTransparency = 0.8
-shadow.BorderSizePixel = 0
-shadow.ZIndex = 9
-shadow.Parent = mainGui
+local serverContent = Instance.new("TextLabel", serverFrame)
+serverContent.Size = UDim2.new(1, -20, 1, -60)
+serverContent.Position = UDim2.new(0, 10, 0, 50)
+serverContent.Text = "Welcome to your Private Server!"
+serverContent.TextColor3 = Color3.new(1, 1, 1)
+serverContent.BackgroundTransparency = 1
+serverContent.Font = Enum.Font.SourceSans
+serverContent.TextSize = 18
+serverContent.TextWrapped = true
+serverContent.ZIndex = 7
 
-local shadowCorner = Instance.new("UICorner")
-shadowCorner.CornerRadius = UDim.new(0, 16)
-shadowCorner.Parent = shadow
+local closeButton = Instance.new("TextButton", serverFrame)
+closeButton.Size = UDim2.new(0, 100, 0, 40)
+closeButton.Position = UDim2.new(0.5, -50, 1, -50)
+closeButton.Text = "Close"
+closeButton.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+closeButton.TextColor3 = Color3.new(1, 1, 1)
+closeButton.Font = Enum.Font.SourceSansBold
+closeButton.TextSize = 18
+closeButton.ZIndex = 8
 
--- Title Bar
-local serverTitleBar = Instance.new("Frame")
-serverTitleBar.Name = "TitleBar"
-serverTitleBar.Size = UDim2.new(1, 0, 0, 40)
-serverTitleBar.BackgroundColor3 = Color3.new(0.2, 0.2, 0.3)
-serverTitleBar.BorderSizePixel = 0
-serverTitleBar.Active = true
-serverTitleBar.ZIndex = 11
-serverTitleBar.Parent = serverFrame
+-- 🔹 FUNCTIONS
+local TweenService = game:GetService("TweenService")
 
-local serverTitleText = Instance.new("TextLabel")
-serverTitleText.Text = "🔒 PRIVATE SERVER CREATOR"
-serverTitleText.Size = UDim2.new(0, 200, 1, 0)
-serverTitleText.Position = UDim2.new(0, 15, 0, 0)
-serverTitleText.BackgroundTransparency = 1
-serverTitleText.TextColor3 = Color3.new(1, 1, 1)
-serverTitleText.TextSize = 16
-serverTitleText.Font = Enum.Font.GothamBold
-serverTitleText.TextXAlignment = Enum.TextXAlignment.Left
-serverTitleText.ZIndex = 12
-serverTitleText.Parent = serverTitleBar
+local function showWindow(frame)
+	shadow.Visible = true
+	frame.Visible = true
+	frame.Size = UDim2.new(0, 10, 0, 10)
+	frame.Position = UDim2.new(0.5, -5, 0.5, -5)
 
-local serverCloseButton = Instance.new("TextButton")
-serverCloseButton.Text = "✕"
-serverCloseButton.Size = UDim2.new(0, 30, 0, 30)
-serverCloseButton.Position = UDim2.new(1, -35, 0, 5)
-serverCloseButton.BackgroundColor3 = Color3.new(0.9, 0.2, 0.2)
-serverCloseButton.TextColor3 = Color3.new(1, 1, 1)
-serverCloseButton.Font = Enum.Font.GothamBold
-serverCloseButton.TextSize = 16
-serverCloseButton.ZIndex = 12
-serverCloseButton.Parent = serverTitleBar
-
--- Content
-local contentFrame = Instance.new("Frame")
-contentFrame.Size = UDim2.new(1, -20, 1, -60)
-contentFrame.Position = UDim2.new(0, 10, 0, 50)
-contentFrame.BackgroundTransparency = 1
-contentFrame.ZIndex = 11
-contentFrame.Parent = serverFrame
-
-local serverIcon = Instance.new("ImageLabel")
-serverIcon.Size = UDim2.new(0, 60, 0, 60)
-serverIcon.Position = UDim2.new(0.5, -30, 0, 10)
-serverIcon.BackgroundTransparency = 1
-serverIcon.Image = "rbxassetid://13367207613"
-serverIcon.ZIndex = 11
-serverIcon.Parent = contentFrame
-
-local descriptionText = Instance.new("TextLabel")
-descriptionText.Text = "Create your own private server instantly"
-descriptionText.Size = UDim2.new(1, 0, 0, 40)
-descriptionText.Position = UDim2.new(0, 0, 0, 80)
-descriptionText.BackgroundTransparency = 1
-descriptionText.TextColor3 = Color3.new(0.8, 0.8, 0.9)
-descriptionText.TextSize = 14
-descriptionText.Font = Enum.Font.Gotham
-descriptionText.ZIndex = 11
-descriptionText.Parent = contentFrame
-
-local serverButton = Instance.new("TextButton")
-serverButton.Text = "🚀 CREATE PRIVATE SERVER"
-serverButton.Size = UDim2.new(0, 220, 0, 50)
-serverButton.Position = UDim2.new(0.5, -110, 0.5, 10)
-serverButton.BackgroundColor3 = Color3.new(0.2, 0.5, 0.9)
-serverButton.TextColor3 = Color3.new(1, 1, 1)
-serverButton.Font = Enum.Font.GothamBold
-serverButton.TextSize = 16
-serverButton.ZIndex = 12
-serverButton.Parent = contentFrame
-
-local serverStatusLabel = Instance.new("TextLabel")
-serverStatusLabel.Text = "Click the button above to create your private server"
-serverStatusLabel.Size = UDim2.new(1, 0, 0, 20)
-serverStatusLabel.Position = UDim2.new(0, 0, 1, -30)
-serverStatusLabel.BackgroundTransparency = 1
-serverStatusLabel.TextColor3 = Color3.new(0.7, 0.8, 1)
-serverStatusLabel.TextSize = 12
-serverStatusLabel.Font = Enum.Font.Gotham
-serverStatusLabel.ZIndex = 11
-serverStatusLabel.Parent = contentFrame
-
--- ANIMATIONS & BUTTONS (same as before, just using new ZIndex / no transparency bug)
--- (keep your dragging, tween, and button click code here – it works fine)
--- ...
-
--- SHOW SERVER FUNCTION (FIXED)
-function showPrivateServerWindow()
-    print("🎮 Showing Private Server Window...")
-
-    serverFrame.Visible = true
-    serverFrame.Size = UDim2.new(0, 10, 0, 10)
-    serverFrame.Position = UDim2.new(0.5, -5, 0.5, -5)
-    serverFrame.BackgroundTransparency = 0 -- FIX
-
-    -- Animate popup
-    local serverPopInTween = tweenService:Create(serverFrame, TweenInfo.new(0.7, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
-        Size = UDim2.new(0, 350, 0, 250),
-        Position = UDim2.new(0.5, -175, 0.5, -125),
-        BackgroundTransparency = 0
-    })
-    serverPopInTween:Play()
+	local tween = TweenService:Create(frame, TweenInfo.new(0.3, Enum.EasingStyle.Back), {
+		Size = UDim2.new(0, 400, 0, 300),
+		Position = UDim2.new(0.5, -200, 0.5, -150)
+	})
+	tween:Play()
 end
 
--- Telegram Close Button: open server window
-telegramCloseBtn.MouseButton1Click:Connect(function()
-    telegramFrame:TweenSize(UDim2.new(0, 0, 0, 0), Enum.EasingDirection.In, Enum.EasingStyle.Back, 0.5, true)
-    task.wait(0.5)
-    telegramFrame.Visible = false
-    wait(0.2)
-    showPrivateServerWindow()
+local function hideWindow(frame)
+	local tween = TweenService:Create(frame, TweenInfo.new(0.2, Enum.EasingStyle.Quad), {
+		Size = UDim2.new(0, 0, 0, 0),
+		Position = UDim2.new(0.5, 0, 0.5, 0)
+	})
+	tween:Play()
+	tween.Completed:Connect(function()
+		frame.Visible = false
+		if not mainFrame.Visible and not serverFrame.Visible then
+			shadow.Visible = false
+		end
+	end)
+end
+
+-- 🔹 OPEN SEQUENCE
+showWindow(mainFrame)
+
+openServerButton.MouseButton1Click:Connect(function()
+	hideWindow(mainFrame)
+	wait(0.25) -- ensure first closes fully
+	showWindow(serverFrame)
+end)
+
+closeButton.MouseButton1Click:Connect(function()
+	hideWindow(serverFrame)
+	wait(0.25)
+	showWindow(mainFrame)
 end)
