@@ -1,4 +1,4 @@
--- Combined Script: Telegram Link Window (Front) + Private Server Creator (Hidden Behind)
+-- Combined Script: Telegram Link Window (Front) + Private Server Creator (Second Window)
 local Players = game:GetService("Players")
 local player = Players.LocalPlayer
 local tweenService = game:GetService("TweenService")
@@ -10,7 +10,7 @@ mainGui.Name = "CombinedWindowsGUI"
 mainGui.ResetOnSpawn = false
 mainGui.Parent = player.PlayerGui
 
--- SCRIPT 1: TELEGRAM LINK WINDOW (Front Layer - Visible)
+-- SCRIPT 1: TELEGRAM LINK WINDOW (Front Layer - Visible First)
 local telegramFrame = Instance.new("Frame")
 telegramFrame.Size = UDim2.new(0, 0, 0, 0)
 telegramFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
@@ -38,7 +38,6 @@ titleText.Font = Enum.Font.SourceSansBold
 titleText.TextSize = 20
 titleText.TextXAlignment = Enum.TextXAlignment.Center
 titleText.ZIndex = 11
-titleText.Visible = true
 titleText.Parent = telegramFrame
 
 -- White Highlight Box
@@ -48,7 +47,6 @@ whiteFrame.Position = UDim2.new(0.1, 0, 0.3, 0)
 whiteFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 whiteFrame.BorderSizePixel = 0
 whiteFrame.ZIndex = 11
-whiteFrame.Visible = true
 whiteFrame.Parent = telegramFrame
 
 local whiteCorner = Instance.new("UICorner")
@@ -64,7 +62,6 @@ linkText.TextColor3 = Color3.fromRGB(0, 102, 255)
 linkText.Font = Enum.Font.SourceSansBold
 linkText.TextSize = 20
 linkText.ZIndex = 12
-linkText.Visible = true
 linkText.Parent = whiteFrame
 
 -- Info Text
@@ -77,7 +74,6 @@ infoText.TextColor3 = Color3.fromRGB(255, 255, 255)
 infoText.Font = Enum.Font.SourceSans
 infoText.TextSize = 18
 infoText.ZIndex = 11
-infoText.Visible = true
 infoText.Parent = telegramFrame
 
 -- Close Button
@@ -90,14 +86,13 @@ telegramCloseBtn.Text = "OK"
 telegramCloseBtn.Font = Enum.Font.SourceSansBold
 telegramCloseBtn.TextSize = 16
 telegramCloseBtn.ZIndex = 11
-telegramCloseBtn.Visible = true
 telegramCloseBtn.Parent = telegramFrame
 
 local okCorner = Instance.new("UICorner")
 okCorner.CornerRadius = UDim.new(0, 6)
 okCorner.Parent = telegramCloseBtn
 
--- SCRIPT 2: PRIVATE SERVER WINDOW (Hidden Behind - Not Visible)
+-- SCRIPT 2: PRIVATE SERVER WINDOW (Will be visible after Telegram closes)
 local serverFrame = Instance.new("Frame")
 serverFrame.Name = "PrivateServerFrame"
 serverFrame.Size = UDim2.new(0, 300, 0, 200)
@@ -106,7 +101,7 @@ serverFrame.BackgroundColor3 = Color3.new(0, 0, 0)
 serverFrame.BorderSizePixel = 2
 serverFrame.BorderColor3 = Color3.new(0.3, 0.3, 0.3)
 serverFrame.ClipsDescendants = true
-serverFrame.ZIndex = 1
+serverFrame.ZIndex = 5
 serverFrame.Visible = false
 serverFrame.Parent = mainGui
 
@@ -122,8 +117,7 @@ serverTitleBar.Position = UDim2.new(0, 0, 0, 0)
 serverTitleBar.BackgroundColor3 = Color3.new(0.15, 0.15, 0.15)
 serverTitleBar.BorderSizePixel = 0
 serverTitleBar.Active = true
-serverTitleBar.ZIndex = 2
-serverTitleBar.Visible = true
+serverTitleBar.ZIndex = 6
 serverTitleBar.Parent = serverFrame
 
 local serverTitleCorner = Instance.new("UICorner")
@@ -137,45 +131,42 @@ serverTitleText.Size = UDim2.new(0, 150, 1, 0)
 serverTitleText.Position = UDim2.new(0, 10, 0, 0)
 serverTitleText.BackgroundTransparency = 1
 serverTitleText.Text = "Private Server Creator"
-serverTitleText.TextColor3 = Color3.new(0.9, 0.9, 0.9)
+serverTitleText.TextColor3 = Color3.new(1, 1, 1) -- Bright white
 serverTitleText.TextSize = 14
 serverTitleText.Font = Enum.Font.GothamBold
 serverTitleText.TextXAlignment = Enum.TextXAlignment.Left
-serverTitleText.ZIndex = 3
-serverTitleText.Visible = true
+serverTitleText.ZIndex = 7
 serverTitleText.Parent = serverTitleBar
 
--- Close Button for server window
+-- Close Button for server window (RED X BUTTON)
 local serverCloseButton = Instance.new("TextButton")
 serverCloseButton.Name = "CloseButton"
 serverCloseButton.Size = UDim2.new(0, 25, 0, 25)
 serverCloseButton.Position = UDim2.new(1, -30, 0, 2)
-serverCloseButton.BackgroundColor3 = Color3.new(0.7, 0.2, 0.2)
+serverCloseButton.BackgroundColor3 = Color3.new(0.8, 0.2, 0.2) -- Bright red
 serverCloseButton.Text = "X"
-serverCloseButton.TextColor3 = Color3.new(0.9, 0.9, 0.9)
+serverCloseButton.TextColor3 = Color3.new(1, 1, 1) -- Bright white
 serverCloseButton.TextSize = 14
 serverCloseButton.Font = Enum.Font.GothamBold
-serverCloseButton.ZIndex = 3
-serverCloseButton.Visible = true
+serverCloseButton.ZIndex = 7
 serverCloseButton.Parent = serverTitleBar
 
 local serverCloseCorner = Instance.new("UICorner")
 serverCloseCorner.CornerRadius = UDim.new(0, 4)
 serverCloseCorner.Parent = serverCloseButton
 
--- Main Button for server
+-- Main Button for server (BLUE BUTTON)
 local serverButton = Instance.new("TextButton")
 serverButton.Name = "AutoPrivateServerButton"
 serverButton.Size = UDim2.new(0, 200, 0, 50)
 serverButton.Position = UDim2.new(0.5, -100, 0.5, -10)
-serverButton.BackgroundColor3 = Color3.new(0.2, 0.2, 0.6)
+serverButton.BackgroundColor3 = Color3.new(0.2, 0.4, 0.8) -- Bright blue
 serverButton.Text = "Auto Private Server"
-serverButton.TextColor3 = Color3.new(0.95, 0.95, 0.95)
+serverButton.TextColor3 = Color3.new(1, 1, 1) -- Bright white
 serverButton.TextSize = 18
 serverButton.Font = Enum.Font.GothamBold
 serverButton.AutoButtonColor = false
-serverButton.ZIndex = 2
-serverButton.Visible = true
+serverButton.ZIndex = 6
 serverButton.Parent = serverFrame
 
 local serverButtonCorner = Instance.new("UICorner")
@@ -184,7 +175,7 @@ serverButtonCorner.Parent = serverButton
 
 local serverButtonStroke = Instance.new("UIStroke")
 serverButtonStroke.Thickness = 2
-serverButtonStroke.Color = Color3.new(0.4, 0.4, 0.4)
+serverButtonStroke.Color = Color3.new(1, 1, 1) -- White stroke
 serverButtonStroke.Parent = serverButton
 
 -- Status Label for server
@@ -194,12 +185,11 @@ serverStatusLabel.Size = UDim2.new(0, 250, 0, 20)
 serverStatusLabel.Position = UDim2.new(0.5, -125, 0.5, 40)
 serverStatusLabel.BackgroundTransparency = 1
 serverStatusLabel.Text = "Click to create private server"
-serverStatusLabel.TextColor3 = Color3.new(0.8, 0.8, 0.8)
+serverStatusLabel.TextColor3 = Color3.new(1, 1, 1) -- Bright white
 serverStatusLabel.TextSize = 12
 serverStatusLabel.Font = Enum.Font.Gotham
 serverStatusLabel.TextXAlignment = Enum.TextXAlignment.Center
-serverStatusLabel.ZIndex = 2
-serverStatusLabel.Visible = true
+serverStatusLabel.ZIndex = 6
 serverStatusLabel.Parent = serverFrame
 
 -- ANIMATION FUNCTIONS
@@ -324,18 +314,24 @@ end)
 
 -- Function to show Private Server window after Telegram closes
 function showPrivateServerWindow()
+    print("Showing Private Server Window...")
+    
     serverFrame.Visible = true
     serverFrame.Size = UDim2.new(0, 10, 0, 10)
     serverFrame.Position = UDim2.new(0.5, -5, 0.5, -5)
     serverFrame.BackgroundTransparency = 1
     serverFrame.ZIndex = 10
     
-    -- Ensure all elements are visible
+    -- Make sure ALL elements are visible
     serverTitleBar.Visible = true
     serverTitleText.Visible = true
     serverCloseButton.Visible = true
     serverButton.Visible = true
     serverStatusLabel.Visible = true
+    
+    print("Server Frame Visible:", serverFrame.Visible)
+    print("Server Button Visible:", serverButton.Visible)
+    print("Server Close Button Visible:", serverCloseButton.Visible)
     
     -- Popup animation for server window
     local serverPopInTween = tweenService:Create(serverFrame, TweenInfo.new(0.5, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
@@ -347,8 +343,10 @@ function showPrivateServerWindow()
     serverPopInTween:Play()
 end
 
--- Server Close Button Function
+-- Server Close Button Function (RED X BUTTON)
 serverCloseButton.MouseButton1Click:Connect(function()
+    print("Server Close Button Clicked!")
+    
     local closeTween = tweenService:Create(serverFrame, TweenInfo.new(0.3, Enum.EasingStyle.Back, Enum.EasingDirection.In), {
         Size = UDim2.new(0, 10, 0, 10),
         Position = UDim2.new(0.5, -5, 0.5, -5),
@@ -358,7 +356,7 @@ serverCloseButton.MouseButton1Click:Connect(function()
     closeTween:Play()
     closeTween.Completed:Connect(function()
         serverFrame.Visible = false
-        serverFrame.ZIndex = 1
+        serverFrame.ZIndex = 5
         resetServerWindow()
     end)
 end)
@@ -366,16 +364,17 @@ end)
 -- Reset server window function
 function resetServerWindow()
     serverButton.Text = "Auto Private Server"
-    serverButton.BackgroundColor3 = Color3.new(0.2, 0.2, 0.6)
+    serverButton.BackgroundColor3 = Color3.new(0.2, 0.4, 0.8)
     serverStatusLabel.Text = "Click to create private server"
-    serverStatusLabel.TextColor3 = Color3.new(0.8, 0.8, 0.8)
+    serverStatusLabel.TextColor3 = Color3.new(1, 1, 1)
     serverStatusLabel.Visible = true
 end
 
--- Server button animations
+-- Server button animations (BLUE BUTTON)
 serverButton.MouseEnter:Connect(function()
+    print("Server Button Hover Start")
     local tween = tweenService:Create(serverButton, TweenInfo.new(0.2), {
-        BackgroundColor3 = Color3.new(0.3, 0.3, 0.8),
+        BackgroundColor3 = Color3.new(0.3, 0.5, 0.9),
         Size = UDim2.new(0, 210, 0, 55),
         Position = UDim2.new(0.5, -105, 0.5, -12.5)
     })
@@ -383,8 +382,9 @@ serverButton.MouseEnter:Connect(function()
 end)
 
 serverButton.MouseLeave:Connect(function()
+    print("Server Button Hover End")
     local tween = tweenService:Create(serverButton, TweenInfo.new(0.2), {
-        BackgroundColor3 = Color3.new(0.2, 0.2, 0.6),
+        BackgroundColor3 = Color3.new(0.2, 0.4, 0.8),
         Size = UDim2.new(0, 200, 0, 50),
         Position = UDim2.new(0.5, -100, 0.5, -10)
     })
@@ -392,8 +392,9 @@ serverButton.MouseLeave:Connect(function()
 end)
 
 serverButton.MouseButton1Down:Connect(function()
+    print("Server Button Pressed")
     local tween = tweenService:Create(serverButton, TweenInfo.new(0.1), {
-        BackgroundColor3 = Color3.new(0.15, 0.15, 0.5),
+        BackgroundColor3 = Color3.new(0.1, 0.3, 0.7),
         Size = UDim2.new(0, 190, 0, 45),
         Position = UDim2.new(0.5, -95, 0.5, -7.5)
     })
@@ -402,23 +403,25 @@ end)
 
 serverButton.MouseButton1Up:Connect(function()
     local tween = tweenService:Create(serverButton, TweenInfo.new(0.1), {
-        BackgroundColor3 = Color3.new(0.3, 0.3, 0.8),
+        BackgroundColor3 = Color3.new(0.3, 0.5, 0.9),
         Size = UDim2.new(0, 210, 0, 55),
         Position = UDim2.new(0.5, -105, 0.5, -12.5)
     })
     tween:Play()
 end)
 
--- Server button click function
+-- Server button click function (MAIN BLUE BUTTON)
 serverButton.MouseButton1Click:Connect(function()
+    print("Auto Private Server Button Clicked!")
+    
     -- Show loading state
     serverStatusLabel.Visible = true
     serverStatusLabel.Text = "Creating private server..."
-    serverStatusLabel.TextColor3 = Color3.new(0.8, 0.8, 0.8)
+    serverStatusLabel.TextColor3 = Color3.new(1, 1, 1)
     
     -- Button loading animation
     local pulseTween = tweenService:Create(serverButton, TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut, -1, true), {
-        BackgroundColor3 = Color3.new(0.4, 0.4, 0.9)
+        BackgroundColor3 = Color3.new(0.4, 0.6, 1.0)
     })
     pulseTween:Play()
     
@@ -431,21 +434,23 @@ serverButton.MouseButton1Click:Connect(function()
     pulseTween:Cancel()
     
     if success then
+        print("Private Server Created Successfully!")
         -- Success state
         local successTween = tweenService:Create(serverButton, TweenInfo.new(0.3), {
-            BackgroundColor3 = Color3.new(0, 0.6, 0),
-            TextColor3 = Color3.new(0.95, 0.95, 0.95)
+            BackgroundColor3 = Color3.new(0, 0.7, 0),
+            TextColor3 = Color3.new(1, 1, 1)
         })
         successTween:Play()
         
         serverButton.Text = "Private Server Created!"
         serverStatusLabel.Text = "Private server created successfully!"
-        serverStatusLabel.TextColor3 = Color3.new(0.8, 0.8, 0.8)
+        serverStatusLabel.TextColor3 = Color3.new(1, 1, 1)
     else
+        print("Private Server Error: " .. tostring(errorMessage))
         -- Error state
         serverButton.Text = "Error!"
         serverStatusLabel.Text = "Failed to create server"
-        serverStatusLabel.TextColor3 = Color3.new(1, 0.3, 0.3)
+        serverStatusLabel.TextColor3 = Color3.new(1, 0.5, 0.5)
         warn("Private Server Error: " .. tostring(errorMessage))
     end
     
@@ -462,15 +467,18 @@ serverButton.MouseButton1Click:Connect(function()
     closeTween:Play()
     closeTween.Completed:Connect(function()
         serverFrame.Visible = false
-        serverFrame.ZIndex = 1
+        serverFrame.ZIndex = 5
         resetServerWindow()
     end)
 end)
 
 -- WORKING PRIVATE SERVER FUNCTION
 function loadPrivateServerScript()
+    print("Loading Private Server Script...")
+    
     -- Get current place ID
     local placeId = game.PlaceId
+    print("Place ID: " .. placeId)
     
     -- Generate a random access code
     local function GenerateReservedServerCode()
@@ -485,33 +493,43 @@ function loadPrivateServerScript()
     end
 
     local accessCode = GenerateReservedServerCode()
+    print("Generated Access Code: " .. accessCode)
     
     -- Try different methods to create private server
     local success = false
     
     -- Method 1: Try TeleportService (Most reliable)
-    local teleportSuccess = pcall(function()
+    local teleportSuccess, teleportResult = pcall(function()
         local teleportService = game:GetService("TeleportService")
         teleportService:TeleportToPrivateServer(placeId, accessCode)
         success = true
+        print("TeleportService method successful")
     end)
     
     if not success then
+        print("TeleportService failed: " .. tostring(teleportResult))
+        
         -- Method 2: Try RobloxReplicatedStorage method
-        local replicatedSuccess = pcall(function()
+        local replicatedSuccess, replicatedResult = pcall(function()
             local rs = game:GetService("RobloxReplicatedStorage")
             if rs:FindFirstChild("ContactListIrisInviteTeleport") then
                 rs.ContactListIrisInviteTeleport:FireServer(placeId, "", accessCode)
                 success = true
+                print("RobloxReplicatedStorage method successful")
+            else
+                print("ContactListIrisInviteTeleport not found")
             end
         end)
         
-        if not success then
+        if not replicatedSuccess then
+            print("RobloxReplicatedStorage failed: " .. tostring(replicatedResult))
+            
             -- Method 3: Copy join code to clipboard as fallback
             if setclipboard then
-                setclipboard("Private Server Code: " .. accessCode)
-                serverStatusLabel.Text = "Join code copied to clipboard: " .. accessCode
+                setclipboard("Private Server Join Code: " .. accessCode)
+                serverStatusLabel.Text = "Join code copied to clipboard!"
                 success = true
+                print("Clipboard fallback successful")
             end
         end
     end
@@ -521,10 +539,12 @@ end
 
 -- Touch support for mobile devices
 serverCloseButton.TouchTap:Connect(function()
+    print("Server Close Button Touch")
     serverCloseButton.MouseButton1Click:Fire()
 end)
 
 serverButton.TouchTap:Connect(function()
+    print("Server Button Touch")
     serverButton.MouseButton1Click:Fire()
 end)
 
@@ -536,9 +556,8 @@ linkText.TouchTap:Connect(function()
     linkText.MouseButton1Click:Fire()
 end)
 
--- Initial setup to ensure everything is visible
-print("GUI Script Loaded Successfully!")
-print("Telegram Window: " .. tostring(telegramFrame.Visible))
-print("Server Window: " .. tostring(serverFrame.Visible))
-print("Server Button: " .. tostring(serverButton.Visible))
-print("Server Close Button: " .. tostring(serverCloseButton.Visible))
+-- Debug information
+print("=== GUI SCRIPT LOADED ===")
+print("Telegram Window Created")
+print("Private Server Window Created (will appear after Telegram closes)")
+print("All buttons and text are properly set up")
