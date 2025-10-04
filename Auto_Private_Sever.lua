@@ -108,7 +108,9 @@ serverFrame.Parent = mainGui
 
 local serverCorner = Instance.new("UICorner")
 serverCorner.CornerRadius = UDim.new(0, 12)
-serverCorner.Parent = serverFrame
+serverCorne
+
+r.Parent = serverFrame
 
 local serverBorder = Instance.new("UIStroke")
 serverBorder.Thickness = 2
@@ -189,15 +191,22 @@ serverButton.Size = UDim2.new(0, 220, 0, 50)
 serverButton.Position = UDim2.new(0.5, -110, 0.5, -10)
 serverButton.BackgroundColor3 = Color3.new(0.2, 0.5, 0.9) -- Blue background
 serverButton.Text = "Auto Private Server"
-serverButton.TextColor3 = Color3.new(1, 1, 1) -- PURE WHITE (was 0.95, 0.95, 0.95)
-serverButton.TextSize = 18
-serverButton.Font = Enum.Font.Gotham -- REGULAR FONT (was GothamBold)
+serverButton.TextColor3 = Color3.new(1, 1, 1) -- PURE WHITE TEXT
+serverButton.TextSize = 18 -- Slightly larger
+serverButton.Font = Enum.Font.GothamBold -- BOLD FONT
 serverButton.AutoButtonColor = false
-serverButton.Parent = contentFrame -- FIXED: Parent to contentFrame (was false)
+serverButton.ZIndex = 11
+serverButton.Parent = contentFrame
 
 local serverButtonCorner = Instance.new("UICorner")
 serverButtonCorner.CornerRadius = UDim.new(0, 8)
 serverButtonCorner.Parent = serverButton
+
+-- Remove any glow/brightness effects and use simple stroke
+local serverButtonStroke = Instance.new("UIStroke")
+serverButtonStroke.Thickness = 2
+serverButtonStroke.Color = Color3.new(1, 1, 1) -- White border for contrast
+serverButtonStroke.Parent = serverButton
 
 -- Status Label for server
 local serverStatusLabel = Instance.new("TextLabel")
@@ -206,7 +215,9 @@ serverStatusLabel.Size = UDim2.new(1, 0, 0, 20)
 serverStatusLabel.Position = UDim2.new(0, 0, 1, -25)
 serverStatusLabel.BackgroundTransparency = 1
 serverStatusLabel.Text = "Ready to create private server"
-serverStatusLabel.TextColor3 = Color3.new(0.8, 0.9, 1)
+serverStatus
+
+Label.TextColor3 = Color3.new(0.8, 0.9, 1)
 serverStatusLabel.TextSize = 12
 serverStatusLabel.Font = Enum.Font.Gotham
 serverStatusLabel.TextXAlignment = Enum.TextXAlignment.Center
@@ -321,7 +332,9 @@ end)
 -- Telegram window buttons
 linkText.MouseButton1Click:Connect(function()
     if setclipboard then
-        setclipboard("https://t.me/RBLX_SCRIPTS_MYANMAR")
+        setcli
+
+pboard("https://t.me/RBLX_SCRIPTS_MYANMAR")
     elseif writeclipboard then
         writeclipboard("https://t.me/RBLX_SCRIPTS_MYANMAR")
     end
@@ -446,7 +459,9 @@ function loadPrivateServerScript()
 
     do
         do
-            local T = {
+            l
+
+ocal T = {
                 0xd76aa478, 0xe8c7b756, 0x242070db, 0xc1bdceee, 0xf57c0faf, 0x4787c62a, 0xa8304613, 0xfd469501,
                 0x698098d8, 0x8b44f7af, 0xffff5bb1, 0x895cd7be, 0x6b901122, 0xfd987193, 0xa679438e, 0x49b40821,
                 0xf61e2562, 0xc040b340, 0x265e5a51, 0xe9b6c7aa, 0xd62f105d, 0x02441453, 0xd8a1e681, 0xe7d3fbc8,
@@ -531,7 +546,9 @@ function loadPrivateServerScript()
                         local temp = add(a, f)
                         temp = add(temp, X[k])
                         temp = add(temp, T[j + 1])
-                        temp = rol(temp, s[shift_index + 1])
+                        temp = rol(temp, s[shift_index +
+
+1])
 
                         local new_b = add(b, temp)
                         a, b, c, d = d, new_b, b, c
@@ -651,7 +668,9 @@ function loadPrivateServerScript()
     if setclipboard then
         setclipboard(accessCode)
     end
-end
+en
+
+d
 
 -- Touch support for mobile devices
 serverCloseButton.TouchTap:Connect(function()
@@ -669,8 +688,3 @@ end)
 linkText.TouchTap:Connect(function()
     linkText.MouseButton1Click:Fire()
 end)
-
-print("✅ SCRIPT LOADED SUCCESSFULLY!")
-print("📱 Script 1: Telegram Window (Loads First - Behind)")
-print("🎮 Script 2: Private Server Window (Loads After OK Pressed)")
-print("🔧 Auto Private Server button now has CLEAR WHITE BOLD TEXT")
