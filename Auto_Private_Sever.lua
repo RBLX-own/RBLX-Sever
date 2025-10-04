@@ -189,11 +189,11 @@ serverButton.Size = UDim2.new(0, 220, 0, 50)
 serverButton.Position = UDim2.new(0.5, -110, 0.5, -10)
 serverButton.BackgroundColor3 = Color3.new(0.2, 0.5, 0.9) -- Blue background
 serverButton.Text = "Auto Private Server"
-serverButton.TextColor3 = Color3.new(0.95, 0.95, 0.95) -- Soft white
-serverButton.TextSize = 18 -- Slightly larger
-serverButton.Font = Enum.Font.GothamBold -- BOLD FONT
+serverButton.TextColor3 = Color3.new(1, 1, 1) -- PURE WHITE (was 0.95, 0.95, 0.95)
+serverButton.TextSize = 18
+serverButton.Font = Enum.Font.Gotham -- REGULAR FONT (was GothamBold)
 serverButton.AutoButtonColor = false
-serverButton.Parent = false
+serverButton.Parent = contentFrame -- FIXED: Parent to contentFrame (was false)
 
 local serverButtonCorner = Instance.new("UICorner")
 serverButtonCorner.CornerRadius = UDim.new(0, 8)
