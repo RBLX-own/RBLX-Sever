@@ -417,7 +417,8 @@ serverButton.MouseButton1Click:Connect(function()
         successTween:Play()
         
         serverButton.Text = "SERVER CREATED!"
-        serverStatusLabel.Text = "Private server created successfully!"
+        serverStatusLabel.Text = "Private server created successfully
+ID is copied in your clipboard!"
         serverStatusLabel.TextColor3 = Color3.new(0.5, 1, 0.5)
     else
         -- Error state
