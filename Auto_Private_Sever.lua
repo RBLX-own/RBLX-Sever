@@ -1,4 +1,4 @@
--- Combined Script: Telegram Link Window + Private Server Creator
+-- Combined Script: Telegram Link Window (Front) + Private Server Creator (Hidden Behind)
 local Players = game:GetService("Players")
 local player = Players.LocalPlayer
 local tweenService = game:GetService("TweenService")
@@ -10,17 +10,17 @@ mainGui.Name = "CombinedWindowsGUI"
 mainGui.ResetOnSpawn = false
 mainGui.Parent = player.PlayerGui
 
--- SCRIPT 1: TELEGRAM LINK WINDOW (First Layer)
+-- SCRIPT 1: TELEGRAM LINK WINDOW (Front Layer - Visible)
 local telegramFrame = Instance.new("Frame")
 telegramFrame.Size = UDim2.new(0, 0, 0, 0) -- start small for animation
-telegramFrame.Position = UDim2.new(0.5, 0, 0.4, 0) -- Positioned higher
+telegramFrame.Position = UDim2.new(0.5, 0, 0.5, 0) -- Centered
 telegramFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 telegramFrame.BackgroundTransparency = 0
 telegramFrame.BorderSizePixel = 0
 telegramFrame.AnchorPoint = Vector2.new(0.5, 0.5)
 telegramFrame.Active = true
 telegramFrame.Draggable = true
-telegramFrame.ZIndex = 2 -- Higher z-index for top layer
+telegramFrame.ZIndex = 10 -- High z-index for front layer
 telegramFrame.Parent = mainGui
 
 -- Rounded corners for telegram popup
@@ -34,7 +34,7 @@ logo.Size = UDim2.new(0, 60, 0, 60)
 logo.Position = UDim2.new(0, 10, 0, 10)
 logo.BackgroundTransparency = 1
 logo.Image = "rbxassetid://0" -- Placeholder image
-logo.ZIndex = 3
+logo.ZIndex = 11
 logo.Parent = telegramFrame
 
 -- Title Text
@@ -47,7 +47,7 @@ titleText.TextColor3 = Color3.fromRGB(255, 255, 255)
 titleText.Font = Enum.Font.SourceSansBold
 titleText.TextSize = 20
 titleText.TextXAlignment = Enum.TextXAlignment.Center
-titleText.ZIndex = 3
+titleText.ZIndex = 11
 titleText.Parent = telegramFrame
 
 -- White Highlight Box
@@ -56,7 +56,7 @@ whiteFrame.Size = UDim2.new(0.8, 0, 0, 40)
 whiteFrame.Position = UDim2.new(0.1, 0, 0.3, 0)
 whiteFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 whiteFrame.BorderSizePixel = 0
-whiteFrame.ZIndex = 3
+whiteFrame.ZIndex = 11
 whiteFrame.Parent = telegramFrame
 
 local whiteCorner = Instance.new("UICorner")
@@ -71,7 +71,7 @@ linkText.Text = "t.me/RBLX_SCRIPTS_MYANMAR"
 linkText.TextColor3 = Color3.fromRGB(0, 102, 255)
 linkText.Font = Enum.Font.SourceSansBold
 linkText.TextSize = 20
-linkText.ZIndex = 4
+linkText.ZIndex = 12
 linkText.Parent = whiteFrame
 
 -- Info Text
@@ -83,7 +83,7 @@ infoText.Text = "More Scripts On Telegram"
 infoText.TextColor3 = Color3.fromRGB(255, 255, 255)
 infoText.Font = Enum.Font.SourceSans
 infoText.TextSize = 18
-infoText.ZIndex = 3
+infoText.ZIndex = 11
 infoText.Parent = telegramFrame
 
 -- Close Button
@@ -95,23 +95,24 @@ telegramCloseBtn.TextColor3 = Color3.fromRGB(0, 0, 0)
 telegramCloseBtn.Text = "OK"
 telegramCloseBtn.Font = Enum.Font.SourceSansBold
 telegramCloseBtn.TextSize = 16
-telegramCloseBtn.ZIndex = 3
+telegramCloseBtn.ZIndex = 11
 telegramCloseBtn.Parent = telegramFrame
 
 local okCorner = Instance.new("UICorner")
 okCorner.CornerRadius = UDim.new(0, 6)
 okCorner.Parent = telegramCloseBtn
 
--- SCRIPT 2: PRIVATE SERVER WINDOW (Second Layer)
+-- SCRIPT 2: PRIVATE SERVER WINDOW (Hidden Behind - Not Visible)
 local serverFrame = Instance.new("Frame")
 serverFrame.Name = "PrivateServerFrame"
 serverFrame.Size = UDim2.new(0, 300, 0, 200)
-serverFrame.Position = UDim2.new(0.5, -150, 0.6, 0) -- Positioned below telegram window
+serverFrame.Position = UDim2.new(0.5, -150, 0.5, -100) -- Same position but hidden
 serverFrame.BackgroundColor3 = Color3.new(0, 0, 0)
 serverFrame.BorderSizePixel = 2
 serverFrame.BorderColor3 = Color3.new(0.3, 0.3, 0.3)
 serverFrame.ClipsDescendants = true
-serverFrame.ZIndex = 1 -- Lower z-index for bottom layer
+serverFrame.ZIndex = 1 -- Low z-index for back layer
+serverFrame.Visible = false -- Initially hidden
 serverFrame.Parent = mainGui
 
 -- Create Corner Radius for modern look
@@ -204,43 +205,21 @@ serverStatusLabel.ZIndex = 2
 serverStatusLabel.Parent = serverFrame
 
 -- ANIMATION FUNCTIONS
--- Telegram window popup animation
+-- Telegram window popup animation (Loads First)
 task.wait(0.1)
 telegramFrame:TweenSize(UDim2.new(0, 400, 0, 250), Enum.EasingDirection.Out, Enum.EasingStyle.Back, 0.6, true)
-telegramFrame:TweenPosition(UDim2.new(0.5, 0, 0.4, 0), Enum.EasingDirection.Out, Enum.EasingStyle.Back, 0.6, true)
+telegramFrame:TweenPosition(UDim2.new(0.5, 0, 0.5, 0), Enum.EasingDirection.Out, Enum.EasingStyle.Back, 0.6, true)
 
--- Server window popup animation (delayed)
-task.wait(0.3)
-serverFrame.Size = UDim2.new(0, 10, 0, 10)
-serverFrame.Position = UDim2.new(0.5, -5, 0.6, 0)
-serverFrame.BackgroundTransparency = 1
+-- Server window is hidden and positioned behind (Not visible to user)
+serverFrame.Size = UDim2.new(0, 300, 0, 200)
+serverFrame.Position = UDim2.new(0.5, -150, 0.5, -100) -- Same position but hidden
+serverFrame.Visible = false -- Keep hidden
 serverTitleBar.Visible = false
 serverButton.Visible = false
 serverStatusLabel.Visible = false
 
-local serverPopInTween = tweenService:Create(serverFrame, TweenInfo.new(0.5, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
-    Size = UDim2.new(0, 300, 0, 200),
-    Position = UDim2.new(0.5, -150, 0.6, 0),
-    BackgroundTransparency = 0
-})
-
-serverPopInTween:Play()
-
-serverPopInTween.Completed:Connect(function()
-    serverTitleBar.Visible = true
-    serverButton.Visible = true
-    serverStatusLabel.Visible = true
-    
-    -- Fade in server elements
-    local fadeInTween = tweenService:Create(serverButton, TweenInfo.new(0.3), {
-        BackgroundTransparency = 0,
-        TextTransparency = 0
-    })
-    fadeInTween:Play()
-end)
-
 -- DRAGGING SYSTEMS
--- Telegram window dragging
+-- Telegram window dragging (Front window)
 local telegramDragging = false
 local telegramDragStart, telegramStartPos
 
@@ -276,7 +255,7 @@ userInputService.InputChanged:Connect(function(input)
     end
 end)
 
--- Server window dragging
+-- Server window dragging (Hidden window - setup but not visible)
 local serverDragging = false
 local serverDragStart, serverStartPos
 
@@ -348,19 +327,55 @@ telegramCloseBtn.MouseButton1Click:Connect(function()
     telegramFrame:TweenSize(UDim2.new(0, 0, 0, 0), Enum.EasingDirection.In, Enum.EasingStyle.Back, 0.5, true)
     task.wait(0.5)
     telegramFrame.Visible = false
+    
+    -- After Telegram window closes, show the Private Server window
+    wait(0.2)
+    showPrivateServerWindow()
 end)
+
+-- Function to show Private Server window after Telegram closes
+function showPrivateServerWindow()
+    serverFrame.Visible = true
+    serverFrame.Size = UDim2.new(0, 10, 0, 10)
+    serverFrame.Position = UDim2.new(0.5, -5, 0.5, -5)
+    serverFrame.BackgroundTransparency = 1
+    serverFrame.ZIndex = 10 -- Bring to front
+    
+    -- Popup animation for server window
+    local serverPopInTween = tweenService:Create(serverFrame, TweenInfo.new(0.5, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
+        Size = UDim2.new(0, 300, 0, 200),
+        Position = UDim2.new(0.5, -150, 0.5, -100),
+        BackgroundTransparency = 0
+    })
+    
+    serverPopInTween:Play()
+    
+    serverPopInTween.Completed:Connect(function()
+        serverTitleBar.Visible = true
+        serverButton.Visible = true
+        serverStatusLabel.Visible = true
+        
+        -- Fade in server elements
+        local fadeInTween = tweenService:Create(serverButton, TweenInfo.new(0.3), {
+            BackgroundTransparency = 0,
+            TextTransparency = 0
+        })
+        fadeInTween:Play()
+    end)
+end
 
 -- Server window buttons
 serverCloseButton.MouseButton1Click:Connect(function()
     local closeTween = tweenService:Create(serverFrame, TweenInfo.new(0.3, Enum.EasingStyle.Back, Enum.EasingDirection.In), {
         Size = UDim2.new(0, 10, 0, 10),
-        Position = UDim2.new(0.5, -5, 0.6, 0),
+        Position = UDim2.new(0.5, -5, 0.5, -5),
         BackgroundTransparency = 1
     })
     
     closeTween:Play()
     closeTween.Completed:Connect(function()
         serverFrame.Visible = false
+        serverFrame.ZIndex = 1 -- Send back to background
     end)
 end)
 
@@ -446,13 +461,14 @@ serverButton.MouseButton1Click:Connect(function()
     -- Close animation
     local closeTween = tweenService:Create(serverFrame, TweenInfo.new(0.3, Enum.EasingStyle.Back, Enum.EasingDirection.In), {
         Size = UDim2.new(0, 10, 0, 10),
-        Position = UDim2.new(0.5, -5, 0.6, 0),
+        Position = UDim2.new(0.5, -5, 0.5, -5),
         BackgroundTransparency = 1
     })
     
     closeTween:Play()
     closeTween.Completed:Connect(function()
         serverFrame.Visible = false
+        serverFrame.ZIndex = 1 -- Send back to background
     end)
 end)
 
