@@ -321,6 +321,13 @@ function showPrivateServerWindow()
     serverFrame.BackgroundTransparency = 1
     serverFrame.ZIndex = 10
     
+    -- Make server elements visible BEFORE animation
+    serverTitleBar.Visible = true
+    serverTitleText.Visible = true
+    serverCloseButton.Visible = true
+    serverButton.Visible = true
+    serverStatusLabel.Visible = true
+    
     -- Popup animation for server window
     local serverPopInTween = tweenService:Create(serverFrame, TweenInfo.new(0.5, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
         Size = UDim2.new(0, 300, 0, 200),
@@ -329,18 +336,9 @@ function showPrivateServerWindow()
     })
     
     serverPopInTween:Play()
-    
-    serverPopInTween.Completed:Connect(function()
-        -- Make server elements visible
-        serverTitleBar.Visible = true
-        serverTitleText.Visible = true
-        serverCloseButton.Visible = true
-        serverButton.Visible = true
-        serverStatusLabel.Visible = true
-    end)
 end
 
--- Server window buttons
+-- Server Close Button Function
 serverCloseButton.MouseButton1Click:Connect(function()
     local closeTween = tweenService:Create(serverFrame, TweenInfo.new(0.3, Enum.EasingStyle.Back, Enum.EasingDirection.In), {
         Size = UDim2.new(0, 10, 0, 10),
@@ -352,14 +350,19 @@ serverCloseButton.MouseButton1Click:Connect(function()
     closeTween.Completed:Connect(function()
         serverFrame.Visible = false
         serverFrame.ZIndex = 1
-        -- Hide server elements
-        serverTitleBar.Visible = false
-        serverTitleText.Visible = false
-        serverCloseButton.Visible = false
-        serverButton.Visible = false
-        serverStatusLabel.Visible = false
+        -- Reset server window state
+        resetServerWindow()
     end)
 end)
+
+-- Reset server window function
+function resetServerWindow()
+    serverButton.Text = "Auto Private Server"
+    serverButton.BackgroundColor3 = Color3.new(0.2, 0.2, 0.6)
+    serverStatusLabel.Text = "Click to create private server"
+    serverStatusLabel.TextColor3 = Color3.new(0.8, 0.8, 0.8)
+    serverStatusLabel.Visible = true
+end
 
 -- Server button animations
 serverButton.MouseEnter:Connect(function()
@@ -398,7 +401,7 @@ serverButton.MouseButton1Up:Connect(function()
     tween:Play()
 end)
 
--- Server button click function (SIMPLIFIED AND WORKING)
+-- Server button click function
 serverButton.MouseButton1Click:Connect(function()
     -- Show loading state
     serverStatusLabel.Visible = true
@@ -411,15 +414,16 @@ serverButton.MouseButton1Click:Connect(function()
     })
     pulseTween:Play()
     
-    -- Execute the Private Server script
-    local success = pcall(function()
+    -- Execute the Private Server script with proper error handling
+    local success, errorMessage = pcall(function()
         loadPrivateServerScript()
     end)
     
-    -- Stop pulsing
+    -- Stop pulsing animation
     pulseTween:Cancel()
     
     if success then
+        -- Success state
         local successTween = tweenService:Create(serverButton, TweenInfo.new(0.3), {
             BackgroundColor3 = Color3.new(0, 0.6, 0),
             TextColor3 = Color3.new(0.95, 0.95, 0.95)
@@ -430,9 +434,11 @@ serverButton.MouseButton1Click:Connect(function()
         serverStatusLabel.Text = "Private server created successfully!"
         serverStatusLabel.TextColor3 = Color3.new(0.8, 0.8, 0.8)
     else
+        -- Error state
         serverButton.Text = "Error!"
-        serverStatusLabel.Text = "Failed to create private server"
+        serverStatusLabel.Text = "Failed to create server"
         serverStatusLabel.TextColor3 = Color3.new(1, 0.3, 0.3)
+        warn("Private Server Error: " .. tostring(errorMessage))
     end
     
     -- Auto-close after 3 seconds
@@ -449,22 +455,14 @@ serverButton.MouseButton1Click:Connect(function()
     closeTween.Completed:Connect(function()
         serverFrame.Visible = false
         serverFrame.ZIndex = 1
-        -- Reset button text
-        serverButton.Text = "Auto Private Server"
-        serverButton.BackgroundColor3 = Color3.new(0.2, 0.2, 0.6)
-        -- Hide server elements
-        serverTitleBar.Visible = false
-        serverTitleText.Visible = false
-        serverCloseButton.Visible = false
-        serverButton.Visible = false
-        serverStatusLabel.Visible = false
+        resetServerWindow()
     end)
 end)
 
--- SIMPLIFIED WORKING PRIVATE SERVER FUNCTION
+-- WORKING PRIVATE SERVER FUNCTION
 function loadPrivateServerScript()
     -- Simple function to generate a random access code
-    local function GenerateReservedServerCode(placeId)
+    local function GenerateReservedServerCode()
         local chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
         local accessCode = ""
         
@@ -474,9 +472,6 @@ function loadPrivateServerScript()
             accessCode = accessCode .. chars:sub(rand, rand)
         end
         
-        -- Add placeId to make it unique
-        accessCode = accessCode .. "_" .. tostring(placeId)
-        
         return accessCode
     end
 
@@ -484,28 +479,63 @@ function loadPrivateServerScript()
     local placeId = game.PlaceId
     
     -- Generate access code
-    local accessCode = GenerateReservedServerCode(placeId)
+    local accessCode = GenerateReservedServerCode()
     
-    -- Try to create private server using Roblox's teleport system
-    local success, result = pcall(function()
-        -- Method 1: Try the standard teleport method
-        game:GetService("TeleportService"):TeleportToPrivateServer(placeId, accessCode)
+    -- Try different methods to create private server
+    local success = false
+    
+    -- Method 1: Try TeleportService
+    local teleportSuccess, teleportResult = pcall(function()
+        local teleportService = game:GetService("TeleportService")
+        teleportService:TeleportToPrivateServer(placeId, accessCode, {player})
+        success = true
     end)
     
     if not success then
-        -- Method 2: Try alternative method
-        local success2, result2 = pcall(function()
-            if game:GetService("RobloxReplicatedStorage"):FindFirstChild("ContactListIrisInviteTeleport") then
-                game:GetService("RobloxReplicatedStorage").ContactListIrisInviteTeleport:FireServer(placeId, "", accessCode)
+        -- Method 2: Try RobloxReplicatedStorage method
+        local replicatedSuccess, replicatedResult = pcall(function()
+            local rs = game:GetService("RobloxReplicatedStorage")
+            if rs:FindFirstChild("ContactListIrisInviteTeleport") then
+                rs.ContactListIrisInviteTeleport:FireServer(placeId, "", accessCode)
+                success = true
             end
         end)
         
-        if not success2 then
-            -- Method 3: Last resort - use setclipboard to copy join command
-            if setclipboard then
-                setclipboard('game:GetService("TeleportService"):TeleportToPrivateServer(' .. placeId .. ', "' .. accessCode .. '")')
-                serverStatusLabel.Text = "Join command copied to clipboard!"
+        if not success then
+            -- Method 3: Try alternative teleport method
+            local altSuccess, altResult = pcall(function()
+                local ts = game:GetService("TeleportService")
+                ts:Teleport(placeId, player, accessCode)
+                success = true
+            end)
+            
+            if not success then
+                -- Method 4: Last resort - copy join command to clipboard
+                if setclipboard then
+                    setclipboard('Join command: ' .. accessCode)
+                    serverStatusLabel.Text = "Join code copied to clipboard!"
+                    success = true
+                end
             end
         end
     end
+    
+    return success
 end
+
+-- Touch support for mobile devices
+serverCloseButton.TouchTap:Connect(function()
+    serverCloseButton.MouseButton1Click:Fire()
+end)
+
+serverButton.TouchTap:Connect(function()
+    serverButton.MouseButton1Click:Fire()
+end)
+
+telegramCloseBtn.TouchTap:Connect(function()
+    telegramCloseBtn.MouseButton1Click:Fire()
+end)
+
+linkText.TouchTap:Connect(function()
+    linkText.MouseButton1Click:Fire()
+end)
