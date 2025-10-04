@@ -649,12 +649,5 @@ function loadPrivateServerScript()
     local accessCode, _ = GenerateReservedServerCode(game.PlaceId)
     game.RobloxReplicatedStorage.ContactListIrisInviteTeleport:FireServer(game.PlaceId, "", accessCode)
 
-    -- Copy access code to clipboard
-    if setclipboard then
-        setclipboard(accessCode)
-    elseif writeclipboard then
-        writeclipboard(accessCode)
-    end
-    
     print("Private server created! Access code copied to clipboard: " .. accessCode)
 end
