@@ -190,7 +190,7 @@ serverButton.Position = UDim2.new(0.5, -110, 0.5, -10)
 serverButton.BackgroundColor3 = Color3.new(0.2, 0.5, 0.9)
 serverButton.Text = "Auto Private Server"
 serverButton.TextColor3 = Color3.new(1, 1, 1) -- Pure white text
-serverButton.TextSize = 20
+serverButton.TextSize = 18
 serverButton.Font = Enum.Font.GothamBold -- Bold font
 serverButton.AutoButtonColor = false
 serverButton.ZIndex = 11
@@ -656,5 +656,5 @@ function loadPrivateServerScript()
         writeclipboard(accessCode)
     end
     
-    print("Private server created!Access code copied to clipboard" .. accessCode)
+    print("Private server created! Access code copied to clipboard: " .. accessCode)
 end
