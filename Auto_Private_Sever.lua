@@ -193,18 +193,11 @@ serverButton.TextColor3 = Color3.new(0.95, 0.95, 0.95) -- Soft white
 serverButton.TextSize = 18 -- Slightly larger
 serverButton.Font = Enum.Font.GothamBold -- BOLD FONT
 serverButton.AutoButtonColor = false
-serverButton.ZIndex = 11
-serverButton.Parent = contentFrame
+serverButton.Parent = false
 
 local serverButtonCorner = Instance.new("UICorner")
 serverButtonCorner.CornerRadius = UDim.new(0, 8)
 serverButtonCorner.Parent = serverButton
-
--- Remove any glow/brightness effects and use simple stroke
-local serverButtonStroke = Instance.new("UIStroke")
-serverButtonStroke.Thickness = 2
-serverButtonStroke.Color = Color3.new(1, 1, 1) -- White border for contrast
-serverButtonStroke.Parent = serverButton
 
 -- Status Label for server
 local serverStatusLabel = Instance.new("TextLabel")
