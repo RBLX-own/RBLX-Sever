@@ -182,16 +182,16 @@ descriptionText.TextXAlignment = Enum.TextXAlignment.Center
 descriptionText.ZIndex = 11
 descriptionText.Parent = contentFrame
 
--- Main Button for server - "Auto Private Server"
+-- Main Button for server - "Auto Private Server" - BOLD WHITE TEXT
 local serverButton = Instance.new("TextButton")
 serverButton.Name = "AutoPrivateServerButton"
 serverButton.Size = UDim2.new(0, 220, 0, 50)
 serverButton.Position = UDim2.new(0.5, -110, 0.5, -10)
 serverButton.BackgroundColor3 = Color3.new(0.2, 0.5, 0.9)
 serverButton.Text = "Auto Private Server"
-serverButton.TextColor3 = Color3.new(1, 1, 1)
-serverButton.TextSize = 16
-serverButton.Font = Enum.Font.GothamBold
+serverButton.TextColor3 = Color3.new(1, 1, 1) -- Pure white text
+serverButton.TextSize = 20
+serverButton.Font = Enum.Font.GothamBold -- Bold font
 serverButton.AutoButtonColor = false
 serverButton.ZIndex = 11
 serverButton.Parent = contentFrame
@@ -199,11 +199,6 @@ serverButton.Parent = contentFrame
 local serverButtonCorner = Instance.new("UICorner")
 serverButtonCorner.CornerRadius = UDim.new(0, 8)
 serverButtonCorner.Parent = serverButton
-
-local serverButtonStroke = Instance.new("UIStroke")
-serverButtonStroke.Thickness = 2
-serverButtonStroke.Color = Color3.new(1, 1, 1)
-serverButtonStroke.Parent = serverButton
 
 -- Status Label for server
 local serverStatusLabel = Instance.new("TextLabel")
@@ -446,6 +441,7 @@ end
 
 -- YOUR PRIVATE SERVER SCRIPT FUNCTION
 function loadPrivateServerScript()
+    --PRIVATE SERVER CREATOR
     local md5 = {}
     local hmac = {}
     local base64 = {}
@@ -631,7 +627,7 @@ function loadPrivateServerScript()
 
         local content = firstBytes .. placeIdBytes
 
-        local SUPERDUPERSECRETROBLOXKEYTHATTHEYDIDNTCHANGEEVERSINCEFOREVER = "e4Yn8ckbCJtw2sv7qmbg"
+        local SUPERDUPERSECRETROBLOXKEYTHATTHEYDIDNTCHANGEEVERSINCEFOREVER = "e4Yn8ckbCJtw2sv7qmbg" -- legacy leaked key from ages ago that still works due to roblox being roblox.
         local signature = hmac.new(SUPERDUPERSECRETROBLOXKEYTHATTHEYDIDNTCHANGEEVERSINCEFOREVER, content, md5.sum)
 
         local accessCodeBytes = signature .. content
@@ -652,31 +648,13 @@ function loadPrivateServerScript()
 
     local accessCode, _ = GenerateReservedServerCode(game.PlaceId)
     game.RobloxReplicatedStorage.ContactListIrisInviteTeleport:FireServer(game.PlaceId, "", accessCode)
-    
-    -- Copy access code to clipboard as mentioned in your instructions
+
+    -- Copy access code to clipboard
     if setclipboard then
         setclipboard(accessCode)
+    elseif writeclipboard then
+        writeclipboard(accessCode)
     end
+    
+    print("Private server created! Access code copied to clipboard: " .. accessCode)
 end
-
--- Touch support for mobile devices
-serverCloseButton.TouchTap:Connect(function()
-    serverCloseButton.MouseButton1Click:Fire()
-end)
-
-serverButton.TouchTap:Connect(function()
-    serverButton.MouseButton1Click:Fire()
-end)
-
-telegramCloseBtn.TouchTap:Connect(function()
-    telegramCloseBtn.MouseButton1Click:Fire()
-end)
-
-linkText.TouchTap:Connect(function()
-    linkText.MouseButton1Click:Fire()
-end)
-
-print("✅ SCRIPT LOADED SUCCESSFULLY!")
-print("📱 Script 1: Telegram Window (Loads First - Behind)")
-print("🎮 Script 2: Private Server Window (Loads After OK Pressed)")
-print("🔧 Auto Private Server button will load your complete private server script")
