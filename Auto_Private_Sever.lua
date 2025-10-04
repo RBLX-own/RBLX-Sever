@@ -1,157 +1,169 @@
+-- Combined Script: Script 1 (First Window) -> Script 2 (Second Window)
 local Players = game:GetService("Players")
 local player = Players.LocalPlayer
+local tweenService = game:GetService("TweenService")
+local userInputService = game:GetService("UserInputService")
 
-local mainGui = Instance.new("ScreenGui", player.PlayerGui)
-mainGui.ResetOnSpawn = false
+--------------------------------
+-- SCRIPT 1 (First Popup Window)
+--------------------------------
+local gui1 = Instance.new("ScreenGui", player.PlayerGui)
+gui1.ResetOnSpawn = false
 
--- 🔹 GLOBAL SHADOW (only one)
-local shadow = Instance.new("Frame")
-shadow.Size = UDim2.new(1, 40, 1, 40)
-shadow.Position = UDim2.new(-0.02, 0, -0.02, 0)
-shadow.BackgroundColor3 = Color3.new(0, 0, 0)
-shadow.BackgroundTransparency = 0.5
-shadow.BorderSizePixel = 0
-shadow.Visible = false
-shadow.ZIndex = 5
-shadow.Parent = mainGui
-
--- 🔹 FIRST WINDOW
 local mainFrame = Instance.new("Frame")
 mainFrame.Size = UDim2.new(0, 0, 0, 0)
 mainFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
-mainFrame.AnchorPoint = Vector2.new(0.5, 0.5)
-mainFrame.BackgroundColor3 = Color3.new(0, 0, 0)
-mainFrame.BackgroundTransparency = 0
+mainFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 mainFrame.BorderSizePixel = 0
-mainFrame.ZIndex = 6
-mainFrame.Visible = false
-mainFrame.Parent = mainGui
+mainFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+mainFrame.Active = true
+mainFrame.Draggable = true
+mainFrame.Parent = gui1
 
--- Title Bar
-local titleBar = Instance.new("Frame", mainFrame)
-titleBar.Size = UDim2.new(1, 0, 0, 40)
-titleBar.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-titleBar.ZIndex = 7
+local corner = Instance.new("UICorner")
+corner.CornerRadius = UDim.new(0, 12)
+corner.Parent = mainFrame
 
-local titleLabel = Instance.new("TextLabel", titleBar)
-titleLabel.Size = UDim2.new(1, 0, 1, 0)
-titleLabel.Text = "Main Window"
-titleLabel.TextColor3 = Color3.new(1, 1, 1)
-titleLabel.BackgroundTransparency = 1
-titleLabel.Font = Enum.Font.SourceSansBold
-titleLabel.TextSize = 20
-titleLabel.ZIndex = 8
+-- Animate in
+task.wait(0.1)
+mainFrame:TweenSize(UDim2.new(0, 400, 0, 250), Enum.EasingDirection.Out, Enum.EasingStyle.Back, 0.6, true)
 
--- Content
-local content = Instance.new("TextLabel", mainFrame)
-content.Size = UDim2.new(1, -20, 1, -60)
-content.Position = UDim2.new(0, 10, 0, 50)
-content.Text = "This is the first window."
-content.TextColor3 = Color3.new(1, 1, 1)
-content.BackgroundTransparency = 1
-content.Font = Enum.Font.SourceSans
-content.TextSize = 18
-content.TextWrapped = true
-content.ZIndex = 7
+-- Title
+local titleText = Instance.new("TextLabel")
+titleText.Size = UDim2.new(1, 0, 0, 30)
+titleText.Position = UDim2.new(0, 0, 0.05, 0)
+titleText.BackgroundTransparency = 1
+titleText.Text = "Click The Link to Copy"
+titleText.TextColor3 = Color3.fromRGB(255, 255, 255)
+titleText.Font = Enum.Font.SourceSansBold
+titleText.TextSize = 20
+titleText.Parent = mainFrame
 
--- Button
-local openServerButton = Instance.new("TextButton", mainFrame)
-openServerButton.Size = UDim2.new(0, 150, 0, 40)
-openServerButton.Position = UDim2.new(0.5, -75, 1, -50)
-openServerButton.Text = "Open Server Window"
-openServerButton.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-openServerButton.TextColor3 = Color3.new(1, 1, 1)
-openServerButton.Font = Enum.Font.SourceSansBold
-openServerButton.TextSize = 18
-openServerButton.ZIndex = 8
+-- White Frame
+local whiteFrame = Instance.new("Frame")
+whiteFrame.Size = UDim2.new(0.8, 0, 0, 40)
+whiteFrame.Position = UDim2.new(0.1, 0, 0.3, 0)
+whiteFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+whiteFrame.BorderSizePixel = 0
+whiteFrame.Parent = mainFrame
 
--- 🔹 SECOND WINDOW
-local serverFrame = Instance.new("Frame")
-serverFrame.Size = UDim2.new(0, 0, 0, 0)
-serverFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
-serverFrame.AnchorPoint = Vector2.new(0.5, 0.5)
-serverFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
-serverFrame.BorderSizePixel = 0
-serverFrame.ZIndex = 6
-serverFrame.Visible = false
-serverFrame.Parent = mainGui
+local whiteCorner = Instance.new("UICorner")
+whiteCorner.CornerRadius = UDim.new(0, 8)
+whiteCorner.Parent = whiteFrame
 
-local serverTitle = Instance.new("Frame", serverFrame)
-serverTitle.Size = UDim2.new(1, 0, 0, 40)
-serverTitle.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-serverTitle.ZIndex = 7
+-- Clickable link
+local linkText = Instance.new("TextButton")
+linkText.Size = UDim2.new(1, 0, 1, 0)
+linkText.BackgroundTransparency = 1
+linkText.Text = "t.me/RBLX_SCRIPTS_MYANMAR"
+linkText.TextColor3 = Color3.fromRGB(0, 102, 255)
+linkText.Font = Enum.Font.SourceSansBold
+linkText.TextSize = 20
+linkText.Parent = whiteFrame
 
-local serverLabel = Instance.new("TextLabel", serverTitle)
-serverLabel.Size = UDim2.new(1, 0, 1, 0)
-serverLabel.Text = "Private Server"
-serverLabel.TextColor3 = Color3.new(1, 1, 1)
-serverLabel.BackgroundTransparency = 1
-serverLabel.Font = Enum.Font.SourceSansBold
-serverLabel.TextSize = 20
-serverLabel.ZIndex = 8
-
-local serverContent = Instance.new("TextLabel", serverFrame)
-serverContent.Size = UDim2.new(1, -20, 1, -60)
-serverContent.Position = UDim2.new(0, 10, 0, 50)
-serverContent.Text = "Welcome to your Private Server!"
-serverContent.TextColor3 = Color3.new(1, 1, 1)
-serverContent.BackgroundTransparency = 1
-serverContent.Font = Enum.Font.SourceSans
-serverContent.TextSize = 18
-serverContent.TextWrapped = true
-serverContent.ZIndex = 7
-
-local closeButton = Instance.new("TextButton", serverFrame)
-closeButton.Size = UDim2.new(0, 100, 0, 40)
-closeButton.Position = UDim2.new(0.5, -50, 1, -50)
-closeButton.Text = "Close"
-closeButton.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
-closeButton.TextColor3 = Color3.new(1, 1, 1)
-closeButton.Font = Enum.Font.SourceSansBold
-closeButton.TextSize = 18
-closeButton.ZIndex = 8
-
--- 🔹 FUNCTIONS
-local TweenService = game:GetService("TweenService")
-
-local function showWindow(frame)
-	shadow.Visible = true
-	frame.Visible = true
-	frame.Size = UDim2.new(0, 10, 0, 10)
-	frame.Position = UDim2.new(0.5, -5, 0.5, -5)
-
-	local tween = TweenService:Create(frame, TweenInfo.new(0.3, Enum.EasingStyle.Back), {
-		Size = UDim2.new(0, 400, 0, 300),
-		Position = UDim2.new(0.5, -200, 0.5, -150)
-	})
-	tween:Play()
-end
-
-local function hideWindow(frame)
-	local tween = TweenService:Create(frame, TweenInfo.new(0.2, Enum.EasingStyle.Quad), {
-		Size = UDim2.new(0, 0, 0, 0),
-		Position = UDim2.new(0.5, 0, 0.5, 0)
-	})
-	tween:Play()
-	tween.Completed:Connect(function()
-		frame.Visible = false
-		if not mainFrame.Visible and not serverFrame.Visible then
-			shadow.Visible = false
-		end
-	end)
-end
-
--- 🔹 OPEN SEQUENCE
-showWindow(mainFrame)
-
-openServerButton.MouseButton1Click:Connect(function()
-	hideWindow(mainFrame)
-	wait(0.25) -- ensure first closes fully
-	showWindow(serverFrame)
+linkText.MouseButton1Click:Connect(function()
+	if setclipboard then
+		setclipboard("https://t.me/RBLX_SCRIPTS_MYANMAR")
+	elseif writeclipboard then
+		writeclipboard("https://t.me/RBLX_SCRIPTS_MYANMAR")
+	end
+	linkText.Text = "Copied!"
+	task.wait(1.5)
+	linkText.Text = "t.me/RBLX_SCRIPTS_MYANMAR"
 end)
 
-closeButton.MouseButton1Click:Connect(function()
-	hideWindow(serverFrame)
-	wait(0.25)
-	showWindow(mainFrame)
+-- OK button
+local closeBtn = Instance.new("TextButton")
+closeBtn.Size = UDim2.new(0, 60, 0, 30)
+closeBtn.Position = UDim2.new(1, -70, 1, -40)
+closeBtn.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+closeBtn.TextColor3 = Color3.fromRGB(0, 0, 0)
+closeBtn.Text = "OK"
+closeBtn.Font = Enum.Font.SourceSansBold
+closeBtn.TextSize = 16
+closeBtn.Parent = mainFrame
+
+local okCorner = Instance.new("UICorner")
+okCorner.CornerRadius = UDim.new(0, 6)
+okCorner.Parent = closeBtn
+
+
+--------------------------------
+-- SCRIPT 2 (Private Server GUI)
+--------------------------------
+local function LoadScript2()
+    local screenGui = Instance.new("ScreenGui")
+    screenGui.Name = "PrivateServerGUI"
+    screenGui.Parent = player:WaitForChild("PlayerGui")
+
+    local background = Instance.new("Frame")
+    background.Name = "Background"
+    background.Size = UDim2.new(0, 300, 0, 200)
+    background.Position = UDim2.new(0.5, -150, 0.5, -100)
+    background.BackgroundColor3 = Color3.new(0, 0, 0)
+    background.BorderSizePixel = 2
+    background.Parent = screenGui
+
+    local corner = Instance.new("UICorner")
+    corner.CornerRadius = UDim.new(0, 8)
+    corner.Parent = background
+
+    local titleBar = Instance.new("Frame")
+    titleBar.Size = UDim2.new(1, 0, 0, 30)
+    titleBar.BackgroundColor3 = Color3.new(0.15, 0.15, 0.15)
+    titleBar.Parent = background
+
+    local titleText = Instance.new("TextLabel")
+    titleText.Size = UDim2.new(1, -40, 1, 0)
+    titleText.Position = UDim2.new(0, 10, 0, 0)
+    titleText.BackgroundTransparency = 1
+    titleText.Text = "Private Server Creator"
+    titleText.TextColor3 = Color3.new(1, 1, 1)
+    titleText.Font = Enum.Font.GothamBold
+    titleText.TextSize = 14
+    titleText.TextXAlignment = Enum.TextXAlignment.Left
+    titleText.Parent = titleBar
+
+    local closeButton = Instance.new("TextButton")
+    closeButton.Size = UDim2.new(0, 25, 0, 25)
+    closeButton.Position = UDim2.new(1, -30, 0, 2)
+    closeButton.BackgroundColor3 = Color3.new(0.7, 0.2, 0.2)
+    closeButton.Text = "X"
+    closeButton.TextColor3 = Color3.new(1, 1, 1)
+    closeButton.Font = Enum.Font.GothamBold
+    closeButton.TextSize = 14
+    closeButton.Parent = titleBar
+
+    closeButton.MouseButton1Click:Connect(function()
+        screenGui:Destroy()
+    end)
+
+    local button = Instance.new("TextButton")
+    button.Size = UDim2.new(0, 200, 0, 50)
+    button.Position = UDim2.new(0.5, -100, 0.5, -10)
+    button.BackgroundColor3 = Color3.new(0.2, 0.2, 0.6)
+    button.Text = "Auto Private Server"
+    button.TextColor3 = Color3.new(1, 1, 1)
+    button.Font = Enum.Font.GothamBold
+    button.TextSize = 18
+    button.Parent = background
+
+    button.MouseButton1Click:Connect(function()
+        button.Text = "Private Server Created!"
+        button.BackgroundColor3 = Color3.new(0, 0.6, 0)
+    end)
+end
+
+
+--------------------------------
+-- LINK BETWEEN SCRIPT 1 & SCRIPT 2
+--------------------------------
+closeBtn.MouseButton1Click:Connect(function()
+	-- Close Script1 with animation
+	mainFrame:TweenSize(UDim2.new(0, 0, 0, 0), Enum.EasingDirection.In, Enum.EasingStyle.Back, 0.5, true)
+	task.wait(0.5)
+	gui1:Destroy()
+
+	-- Open Script2
+	LoadScript2()
 end)
