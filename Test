@@ -3,6 +3,7 @@ local Players = game:GetService("Players")
 local player = Players.LocalPlayer
 local tweenService = game:GetService("TweenService")
 local userInputService = game:GetService("UserInputService")
+local runService = game:GetService("RunService")
 
 -- Create main ScreenGui
 local mainGui = Instance.new("ScreenGui")
@@ -97,8 +98,8 @@ okCorner.Parent = telegramCloseBtn
 -- SCRIPT 2: PRIVATE SERVER WINDOW (Loads After OK Pressed)
 local serverFrame = Instance.new("Frame")
 serverFrame.Name = "PrivateServerFrame"
-serverFrame.Size = UDim2.new(0, 350, 0, 220)
-serverFrame.Position = UDim2.new(0.5, -175, 0.5, -110) -- Center of screen
+serverFrame.Size = UDim2.new(0, 400, 0, 280) -- Increased size for more content
+serverFrame.Position = UDim2.new(0.5, -200, 0.5, -140) -- Center of screen
 serverFrame.BackgroundColor3 = Color3.new(0.15, 0.15, 0.2)
 serverFrame.BorderSizePixel = 0
 serverFrame.ClipsDescendants = true
@@ -174,7 +175,7 @@ local descriptionText = Instance.new("TextLabel")
 descriptionText.Size = UDim2.new(1, 0, 0, 40)
 descriptionText.Position = UDim2.new(0, 0, 0, 10)
 descriptionText.BackgroundTransparency = 1
-descriptionText.Text = "Create your own private server"
+descriptionText.Text = "Create your own private server instantly"
 descriptionText.TextColor3 = Color3.new(0.9, 0.9, 1)
 descriptionText.TextSize = 16
 descriptionText.Font = Enum.Font.Gotham
@@ -185,8 +186,8 @@ descriptionText.Parent = contentFrame
 -- Main Button for server - "Auto Private Server" - BOLD WHITE TEXT
 local serverButton = Instance.new("TextButton")
 serverButton.Name = "AutoPrivateServerButton"
-serverButton.Size = UDim2.new(0, 220, 0, 50)
-serverButton.Position = UDim2.new(0.5, -110, 0.5, -10)
+serverButton.Size = UDim2.new(0, 240, 0, 60)
+serverButton.Position = UDim2.new(0.5, -120, 0.4, -30)
 serverButton.BackgroundColor3 = Color3.new(0.2, 0.5, 0.9)
 serverButton.Text = "Auto Private Server"
 serverButton.TextColor3 = Color3.new(1, 1, 1) -- Pure white text
@@ -199,6 +200,28 @@ serverButton.Parent = contentFrame
 local serverButtonCorner = Instance.new("UICorner")
 serverButtonCorner.CornerRadius = UDim.new(0, 8)
 serverButtonCorner.Parent = serverButton
+
+-- Button glow effect
+local serverButtonGlow = Instance.new("UIStroke")
+serverButtonGlow.Thickness = 2
+serverButtonGlow.Color = Color3.new(0.4, 0.7, 1)
+serverButtonGlow.Transparency = 0.7
+serverButtonGlow.Parent = serverButton
+
+-- Access Code Status Label
+local accessCodeLabel = Instance.new("TextLabel")
+accessCodeLabel.Name = "AccessCodeLabel"
+accessCodeLabel.Size = UDim2.new(1, 0, 0, 25)
+accessCodeLabel.Position = UDim2.new(0, 0, 0.65, 0)
+accessCodeLabel.BackgroundTransparency = 1
+accessCodeLabel.Text = ""
+accessCodeLabel.TextColor3 = Color3.new(0.8, 0.9, 1)
+accessCodeLabel.TextSize = 14
+accessCodeLabel.Font = Enum.Font.Gotham
+accessCodeLabel.TextXAlignment = Enum.TextXAlignment.Center
+accessCodeLabel.ZIndex = 11
+accessCodeLabel.Visible = false
+accessCodeLabel.Parent = contentFrame
 
 -- Status Label for server
 local serverStatusLabel = Instance.new("TextLabel")
@@ -213,6 +236,21 @@ serverStatusLabel.Font = Enum.Font.Gotham
 serverStatusLabel.TextXAlignment = Enum.TextXAlignment.Center
 serverStatusLabel.ZIndex = 11
 serverStatusLabel.Parent = contentFrame
+
+-- Loading animation dots
+local loadingDots = Instance.new("TextLabel")
+loadingDots.Name = "LoadingDots"
+loadingDots.Size = UDim2.new(1, 0, 0, 20)
+loadingDots.Position = UDim2.new(0, 0, 0.75, 0)
+loadingDots.BackgroundTransparency = 1
+loadingDots.Text = ""
+loadingDots.TextColor3 = Color3.new(1, 0.8, 0.3)
+loadingDots.TextSize = 16
+loadingDots.Font = Enum.Font.GothamBold
+loadingDots.TextXAlignment = Enum.TextXAlignment.Center
+loadingDots.ZIndex = 11
+loadingDots.Visible = false
+loadingDots.Parent = contentFrame
 
 -- ANIMATION: Script 1 loads first with popup animation
 task.wait(0.5)
@@ -333,6 +371,12 @@ end)
 
 -- When OK button is pressed, close Script 1 and load Script 2
 telegramCloseBtn.MouseButton1Click:Connect(function()
+    -- Add fade out animation for telegram window
+    local fadeTween = tweenService:Create(telegramFrame, TweenInfo.new(0.3), {
+        BackgroundTransparency = 1
+    })
+    fadeTween:Play()
+    
     telegramFrame:TweenSize(UDim2.new(0, 0, 0, 0), Enum.EasingDirection.In, Enum.EasingStyle.Back, 0.5, true)
     task.wait(0.5)
     telegramFrame.Visible = false
@@ -350,14 +394,30 @@ function showPrivateServerWindow()
     serverFrame.BackgroundTransparency = 1
     serverFrame.ZIndex = 10
     
-    -- Popup animation for server window
+    -- Popup animation for server window with glow effect
     local serverPopInTween = tweenService:Create(serverFrame, TweenInfo.new(0.7, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
-        Size = UDim2.new(0, 350, 0, 220),
-        Position = UDim2.new(0.5, -175, 0.5, -110),
+        Size = UDim2.new(0, 400, 0, 280),
+        Position = UDim2.new(0.5, -200, 0.5, -140),
         BackgroundTransparency = 0
     })
     
+    -- Button glow animation
+    local glowConnection
+    glowConnection = runService.Heartbeat:Connect(function()
+        local pulse = math.sin(tick() * 5) * 0.3 + 0.7
+        serverButtonGlow.Transparency = 1 - pulse
+    end)
+    
     serverPopInTween:Play()
+    serverPopInTween.Completed:Wait()
+    
+    -- Stop glow after animation completes
+    wait(2)
+    glowConnection:Disconnect()
+    local stopGlowTween = tweenService:Create(serverButtonGlow, TweenInfo.new(0.5), {
+        Transparency = 0.7
+    })
+    stopGlowTween:Play()
 end
 
 -- Server Close Button Function
@@ -377,23 +437,57 @@ end)
 -- Server button animations
 serverButton.MouseEnter:Connect(function()
     local tween = tweenService:Create(serverButton, TweenInfo.new(0.2), {
-        BackgroundColor3 = Color3.new(0.3, 0.6, 1.0)
+        BackgroundColor3 = Color3.new(0.3, 0.6, 1.0),
+        Size = UDim2.new(0, 250, 0, 65)
     })
     tween:Play()
+    
+    local glowTween = tweenService:Create(serverButtonGlow, TweenInfo.new(0.2), {
+        Thickness = 3,
+        Transparency = 0.3
+    })
+    glowTween:Play()
 end)
 
 serverButton.MouseLeave:Connect(function()
     local tween = tweenService:Create(serverButton, TweenInfo.new(0.2), {
-        BackgroundColor3 = Color3.new(0.2, 0.5, 0.9)
+        BackgroundColor3 = Color3.new(0.2, 0.5, 0.9),
+        Size = UDim2.new(0, 240, 0, 60)
     })
     tween:Play()
+    
+    local glowTween = tweenService:Create(serverButtonGlow, TweenInfo.new(0.2), {
+        Thickness = 2,
+        Transparency = 0.7
+    })
+    glowTween:Play()
 end)
+
+-- Loading dots animation function
+local function animateLoadingDots()
+    local dots = {".", "..", "...", ""}
+    local dotIndex = 1
+    
+    local connection = runService.Heartbeat:Connect(function()
+        loadingDots.Text = "Creating server" .. dots[dotIndex]
+        dotIndex = dotIndex + 1
+        if dotIndex > #dots then
+            dotIndex = 1
+        end
+    end)
+    
+    return connection
+end
 
 -- Server button click function - LOADS YOUR PRIVATE SERVER SCRIPT
 serverButton.MouseButton1Click:Connect(function()
     -- Show loading state
-    serverStatusLabel.Text = "Creating private server..."
+    serverStatusLabel.Text = "Initializing server creation..."
     serverStatusLabel.TextColor3 = Color3.new(1, 0.8, 0.3)
+    
+    -- Show loading dots
+    loadingDots.Visible = true
+    local loadingConnection = animateLoadingDots()
     
     -- Button loading animation
     local pulseTween = tweenService:Create(serverButton, TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut, -1, true), {
@@ -406,37 +500,86 @@ serverButton.MouseButton1Click:Connect(function()
         loadPrivateServerScript()
     end)
     
-    -- Stop pulsing animation
+    -- Stop animations
     pulseTween:Cancel()
+    loadingConnection:Disconnect()
+    loadingDots.Visible = false
     
     if success then
-        -- Success state
-        local successTween = tweenService:Create(serverButton, TweenInfo.new(0.3), {
-            BackgroundColor3 = Color3.new(0, 0.7, 0.3)
+        -- Success state with enhanced animations
+        local successTween1 = tweenService:Create(serverButton, TweenInfo.new(0.3), {
+            BackgroundColor3 = Color3.new(0, 0.7, 0.3),
+            TextColor3 = Color3.new(1, 1, 1)
         })
-        successTween:Play()
+        successTween1:Play()
+        
+        local successTween2 = tweenService:Create(serverButtonGlow, TweenInfo.new(0.3), {
+            Color = Color3.new(0, 1, 0.5),
+            Thickness = 4
+        })
+        successTween2:Play()
         
         serverButton.Text = "SERVER CREATED!"
         serverStatusLabel.Text = "Private server created successfully!"
         serverStatusLabel.TextColor3 = Color3.new(0.5, 1, 0.5)
+        
+        -- Show access code status
+        accessCodeLabel.Text = "✓ Access code copied to clipboard"
+        accessCodeLabel.TextColor3 = Color3.new(0.5, 1, 0.5)
+        accessCodeLabel.Visible = true
+        
+        -- Pulse animation for access code label
+        local pulseTween = tweenService:Create(accessCodeLabel, TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut, -1, true), {
+            TextColor3 = Color3.new(0.8, 1, 0.8)
+        })
+        pulseTween:Play()
+        
     else
         -- Error state
         serverButton.Text = "ERROR!"
-        serverStatusLabel.Text = "Failed to create server"
+        serverStatusLabel.Text = "Failed to create server: " .. tostring(errorMessage)
         serverStatusLabel.TextColor3 = Color3.new(1, 0.5, 0.5)
+        
+        -- Show error status
+        accessCodeLabel.Text = "✗ Failed to copy access code"
+        accessCodeLabel.TextColor3 = Color3.new(1, 0.5, 0.5)
+        accessCodeLabel.Visible = true
     end
     
-    -- Reset after 3 seconds
-    wait(3)
+    -- Reset after 5 seconds
+    wait(5)
     resetServerWindow()
 end)
 
 -- Reset server window function
 function resetServerWindow()
+    local resetTween1 = tweenService:Create(serverButton, TweenInfo.new(0.3), {
+        BackgroundColor3 = Color3.new(0.2, 0.5, 0.9),
+        TextColor3 = Color3.new(1, 1, 1)
+    })
+    resetTween1:Play()
+    
+    local resetTween2 = tweenService:Create(serverButtonGlow, TweenInfo.new(0.3), {
+        Color = Color3.new(0.4, 0.7, 1),
+        Thickness = 2
+    })
+    resetTween2:Play()
+    
     serverButton.Text = "Auto Private Server"
-    serverButton.BackgroundColor3 = Color3.new(0.2, 0.5, 0.9)
     serverStatusLabel.Text = "Ready to create private server"
     serverStatusLabel.TextColor3 = Color3.new(0.8, 0.9, 1)
+    
+    -- Hide access code label with fade out
+    if accessCodeLabel.Visible then
+        local fadeTween = tweenService:Create(accessCodeLabel, TweenInfo.new(0.5), {
+            TextTransparency = 1
+        })
+        fadeTween:Play()
+        fadeTween.Completed:Connect(function()
+            accessCodeLabel.Visible = false
+            accessCodeLabel.TextTransparency = 0
+        })
+    end
 end
 
 -- YOUR PRIVATE SERVER SCRIPT FUNCTION
