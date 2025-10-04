@@ -688,3 +688,8 @@ end)
 linkText.TouchTap:Connect(function()
     linkText.MouseButton1Click:Fire()
 end)
+
+print("✅ SCRIPT LOADED SUCCESSFULLY!")
+print("📱 Script 1: Telegram Window (Loads First - Behind)")
+print("🎮 Script 2: Private Server Window (Loads After OK Pressed)")
+print("🔧 Auto Private Server button now has CLEAR WHITE BOLD TEXT")
