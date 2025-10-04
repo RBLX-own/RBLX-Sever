@@ -108,9 +108,7 @@ serverFrame.Parent = mainGui
 
 local serverCorner = Instance.new("UICorner")
 serverCorner.CornerRadius = UDim.new(0, 12)
-serverCorne
-
-r.Parent = serverFrame
+serverCorner.Parent = serverFrame
 
 local serverBorder = Instance.new("UIStroke")
 serverBorder.Thickness = 2
@@ -215,9 +213,7 @@ serverStatusLabel.Size = UDim2.new(1, 0, 0, 20)
 serverStatusLabel.Position = UDim2.new(0, 0, 1, -25)
 serverStatusLabel.BackgroundTransparency = 1
 serverStatusLabel.Text = "Ready to create private server"
-serverStatus
-
-Label.TextColor3 = Color3.new(0.8, 0.9, 1)
+serverStatusLabel.TextColor3 = Color3.new(0.8, 0.9, 1)
 serverStatusLabel.TextSize = 12
 serverStatusLabel.Font = Enum.Font.Gotham
 serverStatusLabel.TextXAlignment = Enum.TextXAlignment.Center
@@ -332,9 +328,7 @@ end)
 -- Telegram window buttons
 linkText.MouseButton1Click:Connect(function()
     if setclipboard then
-        setcli
-
-pboard("https://t.me/RBLX_SCRIPTS_MYANMAR")
+        setclipboard("https://t.me/RBLX_SCRIPTS_MYANMAR")
     elseif writeclipboard then
         writeclipboard("https://t.me/RBLX_SCRIPTS_MYANMAR")
     end
@@ -459,9 +453,7 @@ function loadPrivateServerScript()
 
     do
         do
-            l
-
-ocal T = {
+            local T = {
                 0xd76aa478, 0xe8c7b756, 0x242070db, 0xc1bdceee, 0xf57c0faf, 0x4787c62a, 0xa8304613, 0xfd469501,
                 0x698098d8, 0x8b44f7af, 0xffff5bb1, 0x895cd7be, 0x6b901122, 0xfd987193, 0xa679438e, 0x49b40821,
                 0xf61e2562, 0xc040b340, 0x265e5a51, 0xe9b6c7aa, 0xd62f105d, 0x02441453, 0xd8a1e681, 0xe7d3fbc8,
@@ -546,9 +538,7 @@ ocal T = {
                         local temp = add(a, f)
                         temp = add(temp, X[k])
                         temp = add(temp, T[j + 1])
-                        temp = rol(temp, s[shift_index +
-
-1])
+                        temp = rol(temp, s[shift_index + 1])
 
                         local new_b = add(b, temp)
                         a, b, c, d = d, new_b, b, c
@@ -668,9 +658,7 @@ ocal T = {
     if setclipboard then
         setclipboard(accessCode)
     end
-en
-
-d
+end
 
 -- Touch support for mobile devices
 serverCloseButton.TouchTap:Connect(function()
