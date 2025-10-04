@@ -12,18 +12,17 @@ mainGui.Parent = player.PlayerGui
 
 -- SCRIPT 1: TELEGRAM LINK WINDOW (Front Layer - Visible)
 local telegramFrame = Instance.new("Frame")
-telegramFrame.Size = UDim2.new(0, 0, 0, 0) -- start small for animation
-telegramFrame.Position = UDim2.new(0.5, 0, 0.5, 0) -- Centered
+telegramFrame.Size = UDim2.new(0, 0, 0, 0)
+telegramFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
 telegramFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 telegramFrame.BackgroundTransparency = 0
 telegramFrame.BorderSizePixel = 0
 telegramFrame.AnchorPoint = Vector2.new(0.5, 0.5)
 telegramFrame.Active = true
 telegramFrame.Draggable = true
-telegramFrame.ZIndex = 10 -- High z-index for front layer
+telegramFrame.ZIndex = 10
 telegramFrame.Parent = mainGui
 
--- Rounded corners for telegram popup
 local telegramCorner = Instance.new("UICorner")
 telegramCorner.CornerRadius = UDim.new(0, 12)
 telegramCorner.Parent = telegramFrame
@@ -39,6 +38,7 @@ titleText.Font = Enum.Font.SourceSansBold
 titleText.TextSize = 20
 titleText.TextXAlignment = Enum.TextXAlignment.Center
 titleText.ZIndex = 11
+titleText.Visible = true
 titleText.Parent = telegramFrame
 
 -- White Highlight Box
@@ -48,6 +48,7 @@ whiteFrame.Position = UDim2.new(0.1, 0, 0.3, 0)
 whiteFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 whiteFrame.BorderSizePixel = 0
 whiteFrame.ZIndex = 11
+whiteFrame.Visible = true
 whiteFrame.Parent = telegramFrame
 
 local whiteCorner = Instance.new("UICorner")
@@ -63,6 +64,7 @@ linkText.TextColor3 = Color3.fromRGB(0, 102, 255)
 linkText.Font = Enum.Font.SourceSansBold
 linkText.TextSize = 20
 linkText.ZIndex = 12
+linkText.Visible = true
 linkText.Parent = whiteFrame
 
 -- Info Text
@@ -75,6 +77,7 @@ infoText.TextColor3 = Color3.fromRGB(255, 255, 255)
 infoText.Font = Enum.Font.SourceSans
 infoText.TextSize = 18
 infoText.ZIndex = 11
+infoText.Visible = true
 infoText.Parent = telegramFrame
 
 -- Close Button
@@ -87,6 +90,7 @@ telegramCloseBtn.Text = "OK"
 telegramCloseBtn.Font = Enum.Font.SourceSansBold
 telegramCloseBtn.TextSize = 16
 telegramCloseBtn.ZIndex = 11
+telegramCloseBtn.Visible = true
 telegramCloseBtn.Parent = telegramFrame
 
 local okCorner = Instance.new("UICorner")
@@ -119,6 +123,7 @@ serverTitleBar.BackgroundColor3 = Color3.new(0.15, 0.15, 0.15)
 serverTitleBar.BorderSizePixel = 0
 serverTitleBar.Active = true
 serverTitleBar.ZIndex = 2
+serverTitleBar.Visible = true
 serverTitleBar.Parent = serverFrame
 
 local serverTitleCorner = Instance.new("UICorner")
@@ -137,6 +142,7 @@ serverTitleText.TextSize = 14
 serverTitleText.Font = Enum.Font.GothamBold
 serverTitleText.TextXAlignment = Enum.TextXAlignment.Left
 serverTitleText.ZIndex = 3
+serverTitleText.Visible = true
 serverTitleText.Parent = serverTitleBar
 
 -- Close Button for server window
@@ -150,6 +156,7 @@ serverCloseButton.TextColor3 = Color3.new(0.9, 0.9, 0.9)
 serverCloseButton.TextSize = 14
 serverCloseButton.Font = Enum.Font.GothamBold
 serverCloseButton.ZIndex = 3
+serverCloseButton.Visible = true
 serverCloseButton.Parent = serverTitleBar
 
 local serverCloseCorner = Instance.new("UICorner")
@@ -168,6 +175,7 @@ serverButton.TextSize = 18
 serverButton.Font = Enum.Font.GothamBold
 serverButton.AutoButtonColor = false
 serverButton.ZIndex = 2
+serverButton.Visible = true
 serverButton.Parent = serverFrame
 
 local serverButtonCorner = Instance.new("UICorner")
@@ -191,6 +199,7 @@ serverStatusLabel.TextSize = 12
 serverStatusLabel.Font = Enum.Font.Gotham
 serverStatusLabel.TextXAlignment = Enum.TextXAlignment.Center
 serverStatusLabel.ZIndex = 2
+serverStatusLabel.Visible = true
 serverStatusLabel.Parent = serverFrame
 
 -- ANIMATION FUNCTIONS
@@ -321,7 +330,7 @@ function showPrivateServerWindow()
     serverFrame.BackgroundTransparency = 1
     serverFrame.ZIndex = 10
     
-    -- Make server elements visible BEFORE animation
+    -- Ensure all elements are visible
     serverTitleBar.Visible = true
     serverTitleText.Visible = true
     serverCloseButton.Visible = true
@@ -350,7 +359,6 @@ serverCloseButton.MouseButton1Click:Connect(function()
     closeTween.Completed:Connect(function()
         serverFrame.Visible = false
         serverFrame.ZIndex = 1
-        -- Reset server window state
         resetServerWindow()
     end)
 end)
@@ -461,39 +469,36 @@ end)
 
 -- WORKING PRIVATE SERVER FUNCTION
 function loadPrivateServerScript()
-    -- Simple function to generate a random access code
+    -- Get current place ID
+    local placeId = game.PlaceId
+    
+    -- Generate a random access code
     local function GenerateReservedServerCode()
         local chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
         local accessCode = ""
         
-        -- Generate random string
         for i = 1, 16 do
             local rand = math.random(1, #chars)
             accessCode = accessCode .. chars:sub(rand, rand)
         end
-        
         return accessCode
     end
 
-    -- Get current place ID
-    local placeId = game.PlaceId
-    
-    -- Generate access code
     local accessCode = GenerateReservedServerCode()
     
     -- Try different methods to create private server
     local success = false
     
-    -- Method 1: Try TeleportService
-    local teleportSuccess, teleportResult = pcall(function()
+    -- Method 1: Try TeleportService (Most reliable)
+    local teleportSuccess = pcall(function()
         local teleportService = game:GetService("TeleportService")
-        teleportService:TeleportToPrivateServer(placeId, accessCode, {player})
+        teleportService:TeleportToPrivateServer(placeId, accessCode)
         success = true
     end)
     
     if not success then
         -- Method 2: Try RobloxReplicatedStorage method
-        local replicatedSuccess, replicatedResult = pcall(function()
+        local replicatedSuccess = pcall(function()
             local rs = game:GetService("RobloxReplicatedStorage")
             if rs:FindFirstChild("ContactListIrisInviteTeleport") then
                 rs.ContactListIrisInviteTeleport:FireServer(placeId, "", accessCode)
@@ -502,20 +507,11 @@ function loadPrivateServerScript()
         end)
         
         if not success then
-            -- Method 3: Try alternative teleport method
-            local altSuccess, altResult = pcall(function()
-                local ts = game:GetService("TeleportService")
-                ts:Teleport(placeId, player, accessCode)
+            -- Method 3: Copy join code to clipboard as fallback
+            if setclipboard then
+                setclipboard("Private Server Code: " .. accessCode)
+                serverStatusLabel.Text = "Join code copied to clipboard: " .. accessCode
                 success = true
-            end)
-            
-            if not success then
-                -- Method 4: Last resort - copy join command to clipboard
-                if setclipboard then
-                    setclipboard('Join command: ' .. accessCode)
-                    serverStatusLabel.Text = "Join code copied to clipboard!"
-                    success = true
-                end
             end
         end
     end
@@ -539,3 +535,10 @@ end)
 linkText.TouchTap:Connect(function()
     linkText.MouseButton1Click:Fire()
 end)
+
+-- Initial setup to ensure everything is visible
+print("GUI Script Loaded Successfully!")
+print("Telegram Window: " .. tostring(telegramFrame.Visible))
+print("Server Window: " .. tostring(serverFrame.Visible))
+print("Server Button: " .. tostring(serverButton.Visible))
+print("Server Close Button: " .. tostring(serverCloseButton.Visible))
