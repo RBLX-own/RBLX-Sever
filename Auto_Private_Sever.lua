@@ -656,5 +656,5 @@ function loadPrivateServerScript()
         writeclipboard(accessCode)
     end
     
-    print("Private server created! Access code copied to clipboard: " .. accessCode)
+    print("Private server created!Access code copied to clipboard" .. accessCode)
 end
